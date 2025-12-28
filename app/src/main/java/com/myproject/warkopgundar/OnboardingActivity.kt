@@ -12,7 +12,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.myproject.warkopgundar.databinding.ActivityOnboardingBinding
 import com.myproject.warkopgundar.databinding.ActivitySplashScreenBinding
 
-class OnboardingActivity : AppCompatActivity() {
+class OnboardingActivity : BaseActivity() {
     private lateinit var binding: ActivityOnboardingBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,8 +37,7 @@ class OnboardingActivity : AppCompatActivity() {
             if (currentItem < adapter.itemCount - 1) {
                 viewPager.setCurrentItem(currentItem + 1, true)
             } else {
-                val intent = Intent(this, MainActivity::class.java)
-                startActivity(intent)
+                navigateTo(AuthSigninActivity::class.java, isFinal = true)
             }
         }
 
