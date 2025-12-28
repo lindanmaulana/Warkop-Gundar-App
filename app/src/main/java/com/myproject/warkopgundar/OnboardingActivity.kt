@@ -23,15 +23,15 @@ class OnboardingActivity : BaseActivity() {
         val adapter = OnboardingAdapter(this)
         val viewPager = binding.viewPagerOnboarding
 
-        val actionSkip = binding.actionSkip
-        val actionNext = binding.actionNext
-        val actionPrev = binding.actionPrev
-
         val tvProgress = binding.tvProgress
 
         binding.viewPagerOnboarding.adapter = adapter
 
-        actionNext.setOnClickListener {
+        binding.actionSkip.setOnClickListener {
+            navigateTo(AuthSigninActivity::class.java, isFinal = true)
+        }
+
+        binding.actionNext.setOnClickListener {
             val currentItem = viewPager.currentItem
 
             if (currentItem < adapter.itemCount - 1) {
@@ -41,7 +41,7 @@ class OnboardingActivity : BaseActivity() {
             }
         }
 
-        actionPrev.setOnClickListener {
+        binding.actionPrev.setOnClickListener {
             val currentItem = viewPager.currentItem
 
             if (currentItem > 0) {
@@ -58,17 +58,17 @@ class OnboardingActivity : BaseActivity() {
 
                 when(position) {
                     0 -> {
-                        actionPrev.visibility = View.GONE
+                        binding.actionPrev.visibility = View.GONE
                     }
 
                     2 -> {
-                        actionSkip.visibility = View.GONE
-                        actionNext.text = "Get Started"
+                        binding.actionSkip.visibility = View.GONE
+                        binding.actionNext.text = "Get Started"
                     }
 
                     else -> {
-                        actionPrev.visibility = View.VISIBLE
-                        actionSkip.visibility = View.VISIBLE
+                        binding.actionPrev.visibility = View.VISIBLE
+                        binding.actionSkip.visibility = View.VISIBLE
                     }
                 }
             }

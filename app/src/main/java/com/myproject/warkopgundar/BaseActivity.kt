@@ -2,8 +2,10 @@ package com.myproject.warkopgundar
 
 import android.app.ActivityOptions
 import android.content.Intent
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.google.android.material.snackbar.Snackbar
 
 
 enum class AnimType {
