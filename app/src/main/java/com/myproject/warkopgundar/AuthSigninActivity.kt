@@ -66,10 +66,10 @@ class AuthSigninActivity : BaseActivity() {
                     return@launch
                 }
 
-                binding.root.showSuccessSnackBar("Registrasi Berhasil", binding.actionSignin)
+                binding.root.showSuccessSnackBar("Login Berhasil", binding.actionSignin)
                 kotlinx.coroutines.delay(1000)
 
-                navigateTo(MainActivity::class.java, isFinal = true)
+                navigateTo(DashboardActivity::class.java, isFinal = true)
             } catch (e: android.database.sqlite.SQLiteConstraintException) {
                 binding.root.showErrorSnackBar("Terjadi kesalahan tidak terduga, please try again later", binding.actionSignin)
             } catch (e: Exception) {
