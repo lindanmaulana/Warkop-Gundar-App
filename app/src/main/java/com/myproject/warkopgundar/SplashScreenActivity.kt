@@ -20,10 +20,18 @@ class SplashScreenActivity : BaseActivity() {
         enableEdgeToEdge()
         setContentView(binding.root)
 
+        val session = SessionManager(this@SplashScreenActivity)
+
         lifecycleScope.launch {
             delay(SPLASH_TIME_LOAD)
 
-            navigateTo(MainActivity::class.java, typeTransition = AnimType.SLIDE, isFinal = true)
+            val targetActivity = when {
+                session.isLoggedIn() -> DashboardActivity::class.java
+
+                else -> MainActivity::class.java
+            }
+
+            navigateTo(targetActivity, typeTransition = AnimType.SLIDE, isFinal = true)
         }
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->

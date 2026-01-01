@@ -27,6 +27,7 @@ class DashboardActivity : BaseActivity() {
 
             else -> {
                 replaceFragmentDashboard(R.id.fragmentContainer, DashboardHomeFragment())
+                updateUI(binding.actionHome)
             }
         }
 

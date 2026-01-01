@@ -17,6 +17,7 @@ import kotlinx.coroutines.launch
 
 class AuthSigninActivity : BaseActivity() {
     private lateinit var db: AppDatabase
+    private lateinit var session: SessionManager
     private lateinit var binding: ActivityAuthSigninBinding
     private lateinit var inputPhoneNumber: TextInputEditText
     private lateinit var inputPassword: TextInputEditText
@@ -28,6 +29,7 @@ class AuthSigninActivity : BaseActivity() {
         setContentView(binding.root)
 
         db = AppDatabase.getDatabase(this@AuthSigninActivity)
+        session = SessionManager(this@AuthSigninActivity)
 
         inputPhoneNumber = binding.inputPhoneNumber
         inputPassword = binding.inputPassword
@@ -67,6 +69,7 @@ class AuthSigninActivity : BaseActivity() {
                 }
 
                 binding.root.showSuccessSnackBar("Login Berhasil", binding.actionSignin)
+                session.createLoginSession(result.phoneNumber)
                 kotlinx.coroutines.delay(1000)
 
                 navigateTo(DashboardActivity::class.java, isFinal = true)
