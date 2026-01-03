@@ -1,5 +1,6 @@
 package com.myproject.warkopgundar
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -62,7 +63,7 @@ class DashboardMenuFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        menuAdapter = MenuAdapter()
+        menuAdapter = MenuAdapter { menu -> navigateToDetail(menu) }
 
         setupSections()
         setupActionCategory()
@@ -70,19 +71,26 @@ class DashboardMenuFragment : Fragment() {
 
     private fun setupSections() {
         binding.sectionKopi.tvCategoryTitle.text = "Kopi"
-        val adapterKopi = MenuAdapter().apply { isGridView = true }
+        val adapterKopi = MenuAdapter{menu -> navigateToDetail(menu)}.apply { isGridView = true }
         binding.sectionKopi.rvHorizontalMenu.adapter = adapterKopi
         adapterKopi.submitList(allMenuItems.filter { it.category == MenuCategory.COFFE })
 
         binding.sectionMie.tvCategoryTitle.text = "Mie"
-        val adapterMie = MenuAdapter().apply { isGridView = true }
+        val adapterMie = MenuAdapter{menu -> navigateToDetail(menu)}.apply { isGridView = true }
         binding.sectionMie.rvHorizontalMenu.adapter = adapterMie
         adapterMie.submitList(allMenuItems.filter { it.category == MenuCategory.MIE })
 
         binding.sectionNasi.tvCategoryTitle.text = "Nasi"
-        val adapterNasi = MenuAdapter().apply { isGridView = true }
+        val adapterNasi = MenuAdapter{menu -> navigateToDetail(menu)}.apply { isGridView = true }
         binding.sectionNasi.rvHorizontalMenu.adapter = adapterNasi
         adapterNasi.submitList(allMenuItems.filter { it.category == MenuCategory.RICE })
+    }
+
+    private fun navigateToDetail(menu: MenuModel) {
+        (requireActivity() as? BaseActivity)?.navigateTo(
+            destination = MenuDetailActivity::class.java,
+            extra = menu,
+        )
     }
 
     private fun setupActionCategory(){

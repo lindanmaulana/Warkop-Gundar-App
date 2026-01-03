@@ -1,5 +1,9 @@
 package com.myproject.warkopgundar
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class MenuModel(
     val id: Int,
     val name: String,
@@ -9,7 +13,7 @@ data class MenuModel(
     val likes: String,
     val imageRes: Int,
     val category: String
-)
+): Parcelable
 
 object MenuCategory {
     const val COFFE = "COFFEE"

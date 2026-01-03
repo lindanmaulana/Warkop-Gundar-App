@@ -15,7 +15,7 @@
         android:layout_marginBottom="8dp"
         android:text="Kopi"
         android:textColor="@color/primary"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:textStyle="bold"/>
 
     <androidx.recyclerview.widget.RecyclerView

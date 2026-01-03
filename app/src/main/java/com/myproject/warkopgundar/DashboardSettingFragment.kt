@@ -1,23 +1,24 @@
 package com.myproject.warkopgundar
 
+import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import androidx.appcompat.app.AlertDialog
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.dialog.MaterialDialogs
+import com.myproject.warkopgundar.databinding.FragmentDashboardSettingBinding
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [DashboardSettingFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class DashboardSettingFragment : Fragment() {
-    // TODO: Rename and change types of parameters
+    private lateinit var session: SessionManager
+    private var _binding: FragmentDashboardSettingBinding? = null
+    private val binding get() = _binding!!
     private var param1: String? = null
     private var param2: String? = null
 
@@ -34,26 +35,95 @@ class DashboardSettingFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_dashboard_setting, container, false)
+        _binding = FragmentDashboardSettingBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment DashboardSettingFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            DashboardSettingFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        session = SessionManager(requireContext())
+
+        binding.actionOrderHistory.setOnClickListener {
+            MaterialAlertDialogBuilder(requireContext()).setTitle("Riwayat Pesanan")
+                .setMessage("Fitur ini akan segera hadir.")
+                .setNegativeButton("OK") {dialog, which ->
+                    dialog.dismiss()
+                }.show()
+        }
+
+        binding.actionVoucherPromo.setOnClickListener {
+            MaterialAlertDialogBuilder(requireContext()).setTitle("Voucher & Promo")
+                .setMessage("Fitur ini akan segera hadir.")
+                .setNegativeButton("OK") {dialog, which ->
+                    dialog.dismiss()
+                }.show()
+        }
+
+        binding.actionMyAddress.setOnClickListener {
+            MaterialAlertDialogBuilder(requireContext()).setTitle("Alamat Saya")
+                .setMessage("Fitur ini akan segera hadir.")
+                .setNegativeButton("OK") {dialog, which ->
+                    dialog.dismiss()
+                }.show()
+        }
+
+        binding.actionNotification.setOnClickListener {
+            MaterialAlertDialogBuilder(requireContext()).setTitle("Notifikasi")
+                .setMessage("Fitur ini akan segera hadir.")
+                .setNegativeButton("OK") {dialog, which ->
+                    dialog.dismiss()
+                }.show()
+        }
+
+        binding.actionApplication.setOnClickListener {
+            MaterialAlertDialogBuilder(requireContext()).setTitle("Tampilan Aplikasi")
+                .setMessage("Fitur ini akan segera hadir.")
+                .setNegativeButton("OK") {dialog, which ->
+                    dialog.dismiss()
+                }.show()
+        }
+
+        binding.actionSettingLanguage.setOnClickListener {
+            MaterialAlertDialogBuilder(requireContext()).setTitle("Bahasa")
+                .setMessage("Fitur ini akan segera hadir.")
+                .setNegativeButton("OK") {dialog, which ->
+                    dialog.dismiss()
+                }.show()
+        }
+
+        binding.actionAccountSecurity.setOnClickListener {
+            MaterialAlertDialogBuilder(requireContext()).setTitle("Keamanan Akun")
+                .setMessage("Fitur ini akan segera hadir.")
+                .setNegativeButton("OK") {dialog, which ->
+                    dialog.dismiss()
+                }.show()
+        }
+
+        binding.actionHelpSupport.setOnClickListener {
+            MaterialAlertDialogBuilder(requireContext()).setTitle("Bantuan & Hubungi Kami")
+                .setMessage("Fitur ini akan segera hadir.")
+                .setNegativeButton("OK") {dialog, which ->
+                    dialog.dismiss()
+                }.show()
+        }
+
+        binding.actionLogout.setOnClickListener {
+            val dialog = MaterialAlertDialogBuilder(requireContext()).setTitle("Konfirmasi Logout")
+                .setMessage("Apakah Anda yakin ingin keluar? Anda perlu masuk lagi untuk menggunakan aplikasi ini.")
+                .setNegativeButton("BATAL") {dialog, which ->
+                    dialog.dismiss()
                 }
-            }
+                .setPositiveButton("KELUAR") {dialog, which ->
+                    session.logout()
+                    (requireActivity() as BaseActivity).navigateTo(AuthSigninActivity::class.java, isFinal = true)
+                }.show()
+
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.RED)
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

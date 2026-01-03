@@ -10,7 +10,7 @@ import android.widget.TextView
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.imageview.ShapeableImageView
 
-class MenuAdapter : ListAdapter<MenuModel, RecyclerView.ViewHolder>(DiffCallback()) {
+class MenuAdapter(private val onItemClick: (MenuModel) -> Unit) : ListAdapter<MenuModel, RecyclerView.ViewHolder>(DiffCallback()) {
     private val TYPE_GRID = 1
     private val TYPE_LIST = 2
     var isGridView: Boolean = true
@@ -34,6 +34,10 @@ class MenuAdapter : ListAdapter<MenuModel, RecyclerView.ViewHolder>(DiffCallback
         val item = getItem(position)
         if (holder is GridViewHolder) holder.bind(item)
         else if (holder is ListViewHolder) (holder as ListViewHolder).bind(item)
+
+        holder.itemView.setOnClickListener {
+            onItemClick(item)
+        }
     }
 }
 

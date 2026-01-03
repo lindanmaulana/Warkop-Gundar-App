@@ -12,7 +12,7 @@ enum class AnimType {
     SLIDE, FADE, NONE
 }
 open class BaseActivity: AppCompatActivity() {
-    fun navigateTo(destination: Class<*>, targetMenuId: Int? = null, typeTransition: AnimType = AnimType.FADE, isFinal: Boolean = false) {
+    fun navigateTo(destination: Class<*>, targetMenuId: Int? = null, extra: MenuModel? = null, typeTransition: AnimType = AnimType.FADE, isFinal: Boolean = false) {
         val intent = Intent(this, destination)
 
         val options = when(typeTransition) {
@@ -41,9 +41,8 @@ open class BaseActivity: AppCompatActivity() {
             }
         }
 
-        targetMenuId?.let {
-            intent.putExtra("TARGET_MENU_ID", it)
-        }
+        targetMenuId?.let { intent.putExtra("TARGET_MENU_ID", it) }
+        extra?.let { intent.putExtra("EXTRA_MENU", it) }
 
         startActivity(intent, options?.toBundle())
         if (isFinal) finishAffinity()
