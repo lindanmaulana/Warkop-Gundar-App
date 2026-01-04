@@ -34,7 +34,6 @@ class DashboardSettingFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         _binding = FragmentDashboardSettingBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -43,6 +42,15 @@ class DashboardSettingFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         session = SessionManager(requireContext())
 
+        setupActions()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    private fun setupActions() {
         binding.actionOrderHistory.setOnClickListener {
             MaterialAlertDialogBuilder(requireContext()).setTitle("Riwayat Pesanan")
                 .setMessage("Fitur ini akan segera hadir.")
@@ -100,11 +108,7 @@ class DashboardSettingFragment : Fragment() {
         }
 
         binding.actionHelpSupport.setOnClickListener {
-            MaterialAlertDialogBuilder(requireContext()).setTitle("Bantuan & Hubungi Kami")
-                .setMessage("Fitur ini akan segera hadir.")
-                .setNegativeButton("OK") {dialog, which ->
-                    dialog.dismiss()
-                }.show()
+            (requireActivity() as BaseActivity).navigateTo(SettingContactActivity::class.java, typeTransition = AnimType.SLIDE)
         }
 
         binding.actionLogout.setOnClickListener {
@@ -120,10 +124,5 @@ class DashboardSettingFragment : Fragment() {
 
             dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.RED)
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

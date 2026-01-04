@@ -2,6 +2,7 @@ package com.myproject.warkopgundar
 
 import android.os.Bundle
 import android.widget.ImageView
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -10,14 +11,16 @@ import com.myproject.warkopgundar.databinding.ActivityDashboardBinding
 
 class DashboardActivity : BaseActivity() {
     private lateinit var binding: ActivityDashboardBinding
+    private var currentMenuId: Int = R.id.actionHome
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
         binding = ActivityDashboardBinding.inflate(layoutInflater)
+        super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(binding.root)
 
         setupBottomNav()
+        setupBackPressed()
         val targetMenu = intent.getIntExtra("TARGET_MENU_ID", -1)
 
         when {
@@ -26,8 +29,7 @@ class DashboardActivity : BaseActivity() {
             }
 
             else -> {
-                replaceFragmentDashboard(R.id.fragmentContainer, DashboardHomeFragment())
-                updateUI(binding.actionHome)
+                navigateToTarget(R.id.actionHome)
             }
         }
 
@@ -38,29 +40,28 @@ class DashboardActivity : BaseActivity() {
         }
     }
 
+    private fun setupBackPressed() {
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (currentMenuId != R.id.actionHome) {
+                    navigateToTarget(R.id.actionHome)
+                } else {
+                    isEnabled = false
+                    onBackPressedDispatcher.onBackPressed()
+                }
+            }
+        })
+    }
+
     private fun setupBottomNav() {
-        binding.actionHome.setOnClickListener {
-            replaceFragmentDashboard(R.id.fragmentContainer, DashboardHomeFragment())
-            updateUI(binding.actionHome)
-        }
-
-        binding.actionMenu.setOnClickListener {
-            replaceFragmentDashboard(R.id.fragmentContainer, DashboardMenuFragment())
-            updateUI(binding.actionMenu)
-        }
-
-        binding.actionCart.setOnClickListener {
-            replaceFragmentDashboard(R.id.fragmentContainer, DashboardCartFragment())
-            updateUI(binding.actionCart)
-        }
-
-        binding.actionSetting.setOnClickListener {
-            replaceFragmentDashboard(R.id.fragmentContainer, DashboardSettingFragment())
-            updateUI(binding.actionSetting)
-        }
+        binding.actionHome.setOnClickListener { navigateToTarget(R.id.actionHome) }
+        binding.actionMenu.setOnClickListener { navigateToTarget(R.id.actionMenu) }
+        binding.actionCart.setOnClickListener { navigateToTarget(R.id.actionCart) }
+        binding.actionSetting.setOnClickListener { navigateToTarget(R.id.actionSetting) }
     }
 
     private fun navigateToTarget(menuId: Int) {
+        currentMenuId = menuId
         when (menuId) {
             R.id.actionHome -> {
                 replaceFragmentDashboard(R.id.fragmentContainer, DashboardHomeFragment())

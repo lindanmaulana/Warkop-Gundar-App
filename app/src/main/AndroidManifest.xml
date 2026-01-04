@@ -12,6 +12,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.WarkopGundar">
         <activity
+            android:name=".OrderPaymentStatusActivity"
+            android:exported="false" />
+        <activity
+            android:name=".OrderPaymentActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SettingContactActivity"
+            android:exported="false" />
+        <activity
+            android:name=".OrderCheckoutActivity"
+            android:exported="false" />
+        <activity
             android:name=".MenuDetailActivity"
             android:exported="false" />
         <activity
