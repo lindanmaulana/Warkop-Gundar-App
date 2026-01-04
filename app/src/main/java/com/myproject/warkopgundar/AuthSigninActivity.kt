@@ -68,6 +68,11 @@ class AuthSigninActivity : BaseActivity() {
                     return@launch
                 }
 
+                if (password != result.password) {
+                    binding.root.showErrorSnackBar("Invalid Credentials!", binding.actionSignin)
+                    return@launch
+                }
+
                 binding.root.showSuccessSnackBar("Login Berhasil", binding.actionSignin)
                 session.createLoginSession(result.phoneNumber)
                 kotlinx.coroutines.delay(1000)

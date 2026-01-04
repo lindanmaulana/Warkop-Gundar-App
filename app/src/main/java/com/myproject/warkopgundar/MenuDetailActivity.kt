@@ -18,10 +18,8 @@ class MenuDetailActivity : BaseActivity() {
             navigateTo(DashboardActivity::class.java, R.id.actionMenu, typeTransition = AnimType.SLIDE, isFinal = true)
         }
 
-        binding.actionSubmitReview.setOnClickListener {
-            val successDialog = DialogSuccess("Ulasan Berhasil Dikirim")
-            successDialog.show(supportFragmentManager, "success_dialog")
-            binding.etNote.text?.clear()
+        binding.actionCheckout.setOnClickListener {
+            navigateTo(OrderCheckoutActivity::class.java, typeTransition = AnimType.SLIDE)
         }
 
         binding.actionAddToCart.setOnClickListener {

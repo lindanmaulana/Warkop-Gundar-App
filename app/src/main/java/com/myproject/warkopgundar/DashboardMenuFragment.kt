@@ -87,7 +87,7 @@ class DashboardMenuFragment : Fragment() {
     }
 
     private fun navigateToDetail(menu: MenuModel) {
-        (requireActivity() as? BaseActivity)?.navigateTo(
+        (requireActivity() as? BaseActivity)?.navigateToWithData(
             destination = MenuDetailActivity::class.java,
             extra = menu,
         )
@@ -140,11 +140,33 @@ class DashboardMenuFragment : Fragment() {
             if (action == actionActive) {
                 action.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.primary))
                 action.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-                action.alpha = 1.0f
-            } else {
-                action.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.gray))
-                action.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
                 action.alpha = 0.5f
+            } else {
+                action.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.primary))
+                action.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+                action.alpha = 1.0f
+            }
+        }
+    }
+
+    fun applyFilter(category: String) {
+        when (category) {
+            MenuCategory.COFFE -> {
+                showFilteredMenu(MenuCategory.COFFE)
+                updateUi(binding.actionCategoryCoffe)
+            }
+            MenuCategory.MIE -> {
+                showFilteredMenu(MenuCategory.MIE)
+                updateUi(binding.actionCategoryMie)
+            }
+            MenuCategory.RICE -> {
+                showFilteredMenu(MenuCategory.RICE)
+                updateUi(binding.actionCategoryRice)
+            }
+            else -> {
+                binding.containerMenu.visibility =  View.VISIBLE
+                binding.containerMenuFiltered.visibility = View.GONE
+                updateUi(binding.actionCategoryAll)
             }
         }
     }

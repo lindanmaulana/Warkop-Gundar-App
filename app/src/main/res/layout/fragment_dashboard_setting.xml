@@ -58,7 +58,7 @@
             </FrameLayout>
 
             <TextView
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="@dimen/spacing_s"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Lucas Scott"
@@ -72,14 +72,17 @@
                 android:text="\@lucasscott3"
                 android:textSize="14sp"
                 android:textColor="#9AA0A6" />
-
         </LinearLayout>
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="@dimen/spacing_m"
             android:backgroundTint="@color/white"
+            app:cardElevation="0dp"
+            app:cardMaxElevation="0dp"
+            app:cardUseCompatPadding="false"
+            app:cardPreventCornerOverlap="false"
             app:layout_constraintTop_toBottomOf="@id/settingProfile"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -95,7 +98,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:background="@android:color/white">
+                    android:background="@android:color/white"
+                    android:layout_marginVertical="@dimen/spacing_l"
+                    android:layout_marginHorizontal="@dimen/second_margin">
 
                     <LinearLayout
                         android:id="@+id/actionOrderHistory"
@@ -103,8 +108,7 @@
                         android:focusable="true"
                         android:layout_width="match_parent"
                         android:layout_height="56dp"
-                        android:gravity="center_vertical"
-                        android:paddingHorizontal="16dp">
+                        android:gravity="center_vertical">
 
                         <TextView
                             android:layout_width="0dp"
@@ -126,8 +130,7 @@
                         android:focusable="true"
                         android:layout_width="match_parent"
                         android:layout_height="56dp"
-                        android:gravity="center_vertical"
-                        android:paddingHorizontal="16dp">
+                        android:gravity="center_vertical">
 
                         <TextView
                             android:layout_width="0dp"
@@ -149,8 +152,7 @@
                         android:focusable="true"
                         android:layout_width="match_parent"
                         android:layout_height="56dp"
-                        android:gravity="center_vertical"
-                        android:paddingHorizontal="16dp">
+                        android:gravity="center_vertical">
 
                         <TextView
                             android:layout_width="0dp"
@@ -172,8 +174,7 @@
                         android:focusable="true"
                         android:layout_width="match_parent"
                         android:layout_height="56dp"
-                        android:gravity="center_vertical"
-                        android:paddingHorizontal="16dp">
+                        android:gravity="center_vertical">
 
                         <TextView
                             android:layout_width="0dp"
@@ -195,8 +196,7 @@
                         android:focusable="true"
                         android:layout_width="match_parent"
                         android:layout_height="56dp"
-                        android:gravity="center_vertical"
-                        android:paddingHorizontal="16dp">
+                        android:gravity="center_vertical">
 
                         <TextView
                             android:layout_width="0dp"
@@ -218,8 +218,7 @@
                         android:focusable="true"
                         android:layout_width="match_parent"
                         android:layout_height="56dp"
-                        android:gravity="center_vertical"
-                        android:paddingHorizontal="16dp">
+                        android:gravity="center_vertical">
 
                         <TextView
                             android:layout_width="0dp"
@@ -239,8 +238,7 @@
                         android:id="@+id/actionAccountSecurity"
                         android:layout_width="match_parent"
                         android:layout_height="56dp"
-                        android:gravity="center_vertical"
-                        android:paddingHorizontal="16dp">
+                        android:gravity="center_vertical">
 
                         <TextView
                             android:layout_width="0dp"
@@ -260,8 +258,7 @@
                         android:id="@+id/actionHelpSupport"
                         android:layout_width="match_parent"
                         android:layout_height="56dp"
-                        android:gravity="center_vertical"
-                        android:paddingHorizontal="16dp">
+                        android:gravity="center_vertical">
 
                         <TextView
                             android:layout_width="0dp"
@@ -283,8 +280,7 @@
                         android:focusable="true"
                         android:layout_width="match_parent"
                         android:layout_height="56dp"
-                        android:gravity="center_vertical"
-                        android:paddingHorizontal="16dp">
+                        android:gravity="center_vertical">
 
                         <TextView
                             android:layout_width="0dp"

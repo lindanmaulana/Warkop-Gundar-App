@@ -1,5 +1,6 @@
 package com.myproject.warkopgundar
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.ImageView
 import androidx.activity.OnBackPressedCallback
@@ -21,22 +22,39 @@ class DashboardActivity : BaseActivity() {
 
         setupBottomNav()
         setupBackPressed()
-        val targetMenu = intent.getIntExtra("TARGET_MENU_ID", -1)
-
-        when {
-            targetMenu != -1 -> {
-                navigateToTarget(targetMenu)
-            }
-
-            else -> {
-                navigateToTarget(R.id.actionHome)
-            }
-        }
+        handleIntentNavigation(intent)
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
+        }
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        handleIntentNavigation(intent)
+    }
+
+    private fun handleIntentNavigation(intent: Intent?) {
+        val targetMenuId = intent?.getIntExtra("TARGET_MENU_ID", R.id.actionHome) ?: R.id.actionHome
+        val categoryFilter = intent?.getStringExtra(ExtraKey.CATEGORY.value)
+
+        when(targetMenuId) {
+            R.id.actionHome -> binding.actionHome.performClick()
+            R.id.actionMenu -> binding.actionMenu.performClick()
+            R.id.actionCart -> binding.actionCart.performClick()
+            R.id.actionSetting -> binding.actionSetting.performClick()
+        }
+
+        if (targetMenuId == R.id.actionMenu && categoryFilter != null) {
+            binding.root.postDelayed({
+                val menuFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainer)
+                if (menuFragment is DashboardMenuFragment) {
+                    menuFragment.applyFilter(categoryFilter)
+                }
+            }, 400)
         }
     }
 
@@ -61,6 +79,8 @@ class DashboardActivity : BaseActivity() {
     }
 
     private fun navigateToTarget(menuId: Int) {
+        if (currentMenuId == menuId && supportFragmentManager.findFragmentById(R.id.fragmentContainer) != null) return
+
         currentMenuId = menuId
         when (menuId) {
             R.id.actionHome -> {

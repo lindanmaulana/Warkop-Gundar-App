@@ -11,8 +11,8 @@
         android:id="@+id/tvCategoryTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
         android:layout_marginBottom="8dp"
+        android:layout_marginStart="@dimen/main_margin"
         android:text="Kopi"
         android:textColor="@color/primary"
         android:textSize="18sp"
@@ -25,7 +25,6 @@
         android:orientation="horizontal"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:clipToPadding="false"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp" />
-
+        android:paddingStart="@dimen/main_margin"
+        android:paddingEnd="@dimen/main_margin" />
 </LinearLayout>
