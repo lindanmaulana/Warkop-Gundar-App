@@ -2,11 +2,12 @@ package com.myproject.warkopgundar
 
 import android.app.ActivityOptions
 import android.content.Intent
+import android.graphics.Color
 import android.os.Parcelable
-import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.io.Serializable
 
 
@@ -19,7 +20,10 @@ enum class ExtraKey(val value: String) {
     CATEGORY("EXTRA_CATEGORY_FILTER"),
     USER_ID("EXTRA_USER_ID"),
     ORDER_ID("EXTRA_ORDER_ID"),
-    IS_EDIT("EXTRA_IS_EDIT_MODE")
+    IS_EDIT("EXTRA_IS_EDIT_MODE"),
+    MESSAGE("EXTRA_MESSAGE"),
+    SESSION_LOGOUT("EXTRA_SESSION_LOGOUT"),
+    SESSION_EXPIRED("EXTRA_SESSION_EXPIRED")
 }
 
 open class BaseActivity: AppCompatActivity() {
@@ -74,6 +78,30 @@ open class BaseActivity: AppCompatActivity() {
 
         startActivity(intent, options?.toBundle())
         if (isFinal) finish()
+    }
+
+    fun showDialogSuccess(title: String, message: String) {
+        MaterialAlertDialogBuilder(this)
+            .setTitle(title)
+            .setMessage(message)
+            .setIcon(R.drawable.icon_status_success)
+            .setPositiveButton("OK") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
+    }
+
+    fun showDialogError(title: String, message: String) {
+        val dialog = MaterialAlertDialogBuilder(this)
+            .setTitle(title)
+            .setMessage(message)
+            .setIcon(R.drawable.icon_status_warning)
+            .setPositiveButton("Tutup") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
+
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.RED)
     }
 
     fun replaceFragmentDashboard(containerId: Int, fragment: Fragment) {

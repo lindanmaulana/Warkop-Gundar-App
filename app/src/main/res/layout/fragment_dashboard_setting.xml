@@ -36,6 +36,9 @@
             app:layout_constraintEnd_toEndOf="parent">
 
             <FrameLayout
+                android:id="@+id/actionProfile"
+                android:clickable="true"
+                android:focusable="true"
                 android:layout_width="96dp"
                 android:layout_height="96dp">
 
@@ -58,6 +61,7 @@
             </FrameLayout>
 
             <TextView
+                android:id="@+id/tvHeaderUsername"
                 android:layout_marginTop="@dimen/spacing_s"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -67,6 +71,7 @@
                 android:textColor="@android:color/white" />
 
             <TextView
+                android:id="@+id/tvHeaderPhoneNumber"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="\@lucasscott3"

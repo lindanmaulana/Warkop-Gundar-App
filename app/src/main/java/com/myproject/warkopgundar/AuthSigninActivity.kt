@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.myproject.warkopgundar.databinding.ActivityAuthSigninBinding
@@ -30,6 +31,21 @@ class AuthSigninActivity : BaseActivity() {
 
         db = AppDatabase.getDatabase(this@AuthSigninActivity)
         session = SessionManager(this@AuthSigninActivity)
+
+        val messageSessionLogout = intent.getStringExtra(ExtraKey.SESSION_LOGOUT.value)
+        val messageSessionExpired = intent.getStringExtra(ExtraKey.SESSION_EXPIRED.value)
+
+        if (messageSessionLogout != null) {
+            showDialogSuccess("Akun Keluar", messageSessionLogout)
+
+            intent.removeExtra(ExtraKey.SESSION_LOGOUT.value)
+        }
+
+        if (messageSessionExpired != null) {
+            showDialogSuccess("Sesi Berakhir", messageSessionExpired)
+
+            intent.removeExtra(ExtraKey.SESSION_EXPIRED.value)
+        }
 
         inputPhoneNumber = binding.inputPhoneNumber
         inputPassword = binding.inputPassword
