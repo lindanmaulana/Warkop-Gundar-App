@@ -25,7 +25,7 @@ object MenuCategory {
 }
 
 @Entity(
-    tableName = "menu",
+    tableName = "menus",
     foreignKeys = [
         ForeignKey(
             entity = Category::class,

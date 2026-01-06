@@ -8,18 +8,18 @@ interface MenuDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertMenu(menu: Menu)
 
-    @Query("SELECT * FROM menu")
+    @Query("SELECT * FROM menus")
     fun getAllMenu(): Flow<List<Menu>>
 
-    @Query("SELECT * FROM menu WHERE categoryId = :catId")
+    @Query("SELECT * FROM menus WHERE categoryId = :catId")
     fun getMenuByCategory(catId: Int): Flow<List<Menu>>
 
-    @Query("SELECT * FROM menu WHERE name LIKE '%' || :search || '%'")
+    @Query("SELECT * FROM menus WHERE name LIKE '%' || :search || '%'")
     fun searchMenu(search: String): Flow<List<Menu>>
 
     @Delete
     suspend fun deleteMenu(menu: Menu)
 
-    @Query("DELETE FROM menu")
+    @Query("DELETE FROM menus")
     suspend fun clearMenu()
 }

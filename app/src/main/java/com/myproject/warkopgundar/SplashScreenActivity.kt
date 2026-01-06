@@ -30,7 +30,7 @@ class SplashScreenActivity : BaseActivity() {
             Log.d("DB_CHECK", "Mencoba mengakses database...")
             val db = AppDatabase.getDatabase(applicationContext)
 
-            val cursor = db.query("SELECT * FROM menu", null)
+            val cursor = db.query("SELECT * FROM menus", null)
             val count = cursor.count
             cursor.close()
 
