@@ -1,12 +1,16 @@
 package com.myproject.warkopgundar
 
+import android.util.Log
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.sqlite.db.SupportSQLiteDatabase
 
-@Database(entities = [User::class], version = 1, exportSchema = false)
+@Database(entities = [User::class, Category::class, Menu::class], version = 2, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
+    abstract fun categoryDao(): CategoryDao
+    abstract fun menuDao(): MenuDao
 
     companion object {
         @Volatile
@@ -18,7 +22,58 @@ abstract class AppDatabase : RoomDatabase() {
                     context.applicationContext,
                     AppDatabase::class.java,
                     "db_warkopgundar"
-                ).build()
+                ).fallbackToDestructiveMigration().addCallback(object : RoomDatabase.Callback() {
+                    override fun onCreate(db: SupportSQLiteDatabase) {
+                        super.onCreate(db)
+
+                        val imgCoffee = R.drawable.img_menu_coffe
+                        val imgMie = R.drawable.img_menu_mie
+                        val imgRice = R.drawable.img_menu_rice
+
+                        try {
+                            db.execSQL("INSERT INTO menu (name, description, price, rating, likes, imageRes, categoryId) VALUES " +
+                                    "('Cappuccino', 'With Steamed Milk', 8000, 4.5, 12000, $imgCoffee, 1)")
+                            db.execSQL("INSERT INTO menu (name, description, price, rating, likes, imageRes, categoryId) VALUES " +
+                                    "('Espresso', 'Strong & Bold', 10000, 4.7, 8000, $imgCoffee, 1)")
+                            db.execSQL("INSERT INTO menu (name, description, price, rating, likes, imageRes, categoryId) VALUES " +
+                                    "('Coffee Latte', 'Creamy Texture', 12000, 4.6, 15000, $imgCoffee, 1)")
+                            db.execSQL("INSERT INTO menu (name, description, price, rating, likes, imageRes, categoryId) VALUES " +
+                                    "('Americano', 'Pure Black Coffee', 7000, 4.4, 10000, $imgCoffee, 1)")
+                            db.execSQL("INSERT INTO menu (name, description, price, rating, likes, imageRes, categoryId) VALUES " +
+                                    "('Moccachino', 'Coffee & Chocolate', 13000, 4.8, 9000, $imgCoffee, 1)")
+
+                            db.execSQL("INSERT INTO menu (name, description, price, rating, likes, imageRes, categoryId) VALUES " +
+                                    "('Indomie Kuah', 'Extra Telur', 12000, 4.8, 167000, $imgMie, 2)")
+                            db.execSQL("INSERT INTO menu (name, description, price, rating, likes, imageRes, categoryId) VALUES " +
+                                    "('Indomie Goreng', 'Double Porsi', 15000, 4.9, 200000, $imgMie, 2)")
+                            db.execSQL("INSERT INTO menu (name, description, price, rating, likes, imageRes, categoryId) VALUES " +
+                                    "('Mie Nyemek', 'Pedas Level 5', 14000, 4.7, 50000, $imgMie, 2)")
+                            db.execSQL("INSERT INTO menu (name, description, price, rating, likes, imageRes, categoryId) VALUES " +
+                                    "('Mie Ayam Bakso', 'Pangsit Goreng', 18000, 4.6, 30000, $imgMie, 2)")
+                            db.execSQL("INSERT INTO menu (name, description, price, rating, likes, imageRes, categoryId) VALUES " +
+                                    "('Mie Goreng Aceh', 'Rempah Spesial', 17000, 4.5, 25000, $imgMie, 2)")
+
+                            db.execSQL("INSERT INTO menu (name, description, price, rating, likes, imageRes, categoryId) VALUES " +
+                                    "('Nasi Goreng Warkop', 'Pake Telur Mata Sapi', 15000, 4.8, 50000, $imgRice, 3)")
+
+                            db.execSQL("INSERT INTO menu (name, description, price, rating, likes, imageRes, categoryId) VALUES " +
+                                    "('Nasi Telor Pontianak', 'Telur Ceplok & Kecap Gurih', 12000, 4.9, 85000, $imgRice, 3)")
+
+                            db.execSQL("INSERT INTO menu (name, description, price, rating, likes, imageRes, categoryId) VALUES " +
+                                    "('Magelangan', 'Mix Nasi & Mie Goreng', 17000, 4.7, 45000, $imgRice, 3)")
+
+                            db.execSQL("INSERT INTO menu (name, description, price, rating, likes, imageRes, categoryId) VALUES " +
+                                    "('Nasi Sarden', 'Sarden Pedas Gurih', 14000, 4.5, 20000, $imgRice, 3)")
+
+                            db.execSQL("INSERT INTO menu (name, description, price, rating, likes, imageRes, categoryId) VALUES " +
+                                    "('Nasi Kornet Telur', 'Tumis Kornet & Telur Dadar', 14000, 4.6, 30000, $imgRice, 3)")
+
+                            android.util.Log.d("DB_SEED", "Berhasil memasukkan 15 menu!")
+                        } catch (e: Exception) {
+                            android.util.Log.e("DB_SEED", "Gagal seeding: ${e.message}")
+                        }
+                    }
+                }).build()
                 INSTANCE = instance
                 instance
             }

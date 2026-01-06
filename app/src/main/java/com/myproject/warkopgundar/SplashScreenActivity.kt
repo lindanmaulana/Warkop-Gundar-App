@@ -1,12 +1,14 @@
 package com.myproject.warkopgundar
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import com.myproject.warkopgundar.databinding.ActivitySplashScreenBinding
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -22,8 +24,17 @@ class SplashScreenActivity : BaseActivity() {
 
         val session = SessionManager(this@SplashScreenActivity)
 
-        lifecycleScope.launch {
+        lifecycleScope.launch(Dispatchers.IO) {
             delay(SPLASH_TIME_LOAD)
+
+            Log.d("DB_CHECK", "Mencoba mengakses database...")
+            val db = AppDatabase.getDatabase(applicationContext)
+
+            val cursor = db.query("SELECT * FROM menu", null)
+            val count = cursor.count
+            cursor.close()
+
+            Log.d("DB_CHECK", "Berhasil akses! Jumlah baris di tabel menu: $count")
 
             val targetActivity = when {
                 session.isLoggedIn() -> DashboardActivity::class.java

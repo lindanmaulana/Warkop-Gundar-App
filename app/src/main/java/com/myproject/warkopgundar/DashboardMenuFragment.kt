@@ -119,6 +119,10 @@ class DashboardMenuFragment : Fragment() {
     }
 
     private fun showFilteredMenu(category: String) {
+        if (!::menuAdapter.isInitialized) {
+            menuAdapter = MenuAdapter {menu -> navigateToDetail(menu)}
+        }
+
         binding.containerMenu.visibility = View.GONE
         binding.containerMenuFiltered.visibility = View.VISIBLE
 
