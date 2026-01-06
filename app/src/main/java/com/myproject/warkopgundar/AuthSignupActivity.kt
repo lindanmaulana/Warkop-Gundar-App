@@ -39,19 +39,38 @@ class AuthSignupActivity : BaseActivity() {
             val password = inputPassword.text.toString().trim()
             val confirmPassword = inputConfirmPassword.text.toString().trim()
 
-            if (userName.isEmpty() || phoneNumber.isEmpty()) {
-                binding.root.showErrorSnackBar("Nama dan Nomor Hp wajib diisi!", binding.actionSignup)
+            if (userName.isEmpty() || phoneNumber.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+                binding.root.showErrorSnackBar("Semua kolom wajib diisi!", binding.actionSignup)
                 return@setOnClickListener
             }
 
-            if (password.length < 6) {
-                binding.root.showErrorSnackBar("Password minimal 6 karakter", binding.actionSignup)
-                return@setOnClickListener
+            when {
+                !phoneNumber.startsWith("08") -> {
+                    binding.root.showErrorSnackBar("Gunakan format 08 (Contoh: 087723...)", binding.actionSignup)
+                    return@setOnClickListener
+                }
+
+                !phoneNumber.all { it.isDigit() } -> {
+                    binding.root.showErrorSnackBar("Nomor telepon hanya boleh berisi angka!", binding.actionSignup)
+                    return@setOnClickListener
+                }
+
+                phoneNumber.length !in 10..13 -> {
+                    binding.root.showErrorSnackBar("Nomor handphone harus 10-13 digit!", binding.actionSignup)
+                    return@setOnClickListener
+                }
             }
 
-            if (password != confirmPassword) {
-                binding.root.showErrorSnackBar("Password dan ConfirmPassword tidak valid", binding.actionSignup)
-                return@setOnClickListener
+            when {
+                password.length < 6 -> {
+                    binding.root.showErrorSnackBar("Password minimal 6 karakter", binding.actionSignup)
+                    return@setOnClickListener
+                }
+
+                password != confirmPassword -> {
+                    binding.root.showErrorSnackBar("Password dan ConfirmPassword tidak valid", binding.actionSignup)
+                    return@setOnClickListener
+                }
             }
 
             val dataUser = User(
