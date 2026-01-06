@@ -10,7 +10,7 @@ import android.widget.TextView
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.imageview.ShapeableImageView
 
-class MenuAdapter(private val onItemClick: (MenuModel) -> Unit) : ListAdapter<MenuModel, RecyclerView.ViewHolder>(DiffCallback()) {
+class MenuAdapter(private val onItemClick: (Menu) -> Unit) : ListAdapter<Menu, RecyclerView.ViewHolder>(DiffCallback()) {
     private val TYPE_GRID = 1
     private val TYPE_LIST = 2
     var isGridView: Boolean = true
@@ -32,8 +32,11 @@ class MenuAdapter(private val onItemClick: (MenuModel) -> Unit) : ListAdapter<Me
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val item = getItem(position)
-        if (holder is GridViewHolder) holder.bind(item)
-        else if (holder is ListViewHolder) (holder as ListViewHolder).bind(item)
+
+        when(holder) {
+            is GridViewHolder -> holder.bind(item)
+            is ListViewHolder -> holder.bind(item)
+        }
 
         holder.itemView.setOnClickListener {
             onItemClick(item)
@@ -41,12 +44,12 @@ class MenuAdapter(private val onItemClick: (MenuModel) -> Unit) : ListAdapter<Me
     }
 }
 
-class DiffCallback : DiffUtil.ItemCallback<MenuModel>() {
-    override fun areItemsTheSame(oldItem: MenuModel, newItem: MenuModel): Boolean {
+class DiffCallback : DiffUtil.ItemCallback<Menu>() {
+    override fun areItemsTheSame(oldItem: Menu, newItem: Menu): Boolean {
         return oldItem.id == newItem.id
     }
 
-    override fun areContentsTheSame(oldItem: MenuModel, newItem: MenuModel): Boolean {
+    override fun areContentsTheSame(oldItem: Menu, newItem: Menu): Boolean {
         return oldItem == newItem
     }
 }
@@ -58,11 +61,11 @@ class GridViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     val tvPrice: TextView = view.findViewById(R.id.tvPrice)
     val btnAdd: MaterialButton = view.findViewById(R.id.btnAdd)
 
-    fun bind(item: MenuModel) {
+    fun bind(item: Menu) {
         tvTitle.text = item.name
         tvSubtitle.text = item.description
-        tvPrice.text = item.price
-        imgMenu.setImageResource(item.imageRes)
+        tvPrice.text = "Rp ${item.price}"
+        imgMenu.setImageResource(item.imageRes ?: R.drawable.img_placeholder)
         // Tambahkan logic klik tombol jika perlu
     }
 }
@@ -72,10 +75,10 @@ class ListViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     val tvTitle: TextView = view.findViewById(R.id.tvTitle)
     val tvPrice: TextView = view.findViewById(R.id.tvPrice)
 
-    fun bind(item: MenuModel) {
+    fun bind(item: Menu) {
         tvTitle.text = item.name
-        tvPrice.text = item.price
-        imgMenu.setImageResource(item.imageRes)
+        tvPrice.text = "Rp ${item.price}"
+        imgMenu.setImageResource(item.imageRes ?: R.drawable.img_placeholder)
         // tvLikes.text = item.likes
     }
 }

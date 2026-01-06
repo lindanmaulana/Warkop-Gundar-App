@@ -19,9 +19,10 @@ data class MenuModel(
 ): Parcelable
 
 object MenuCategory {
-    const val COFFE = "COFFEE"
-    const val MIE = "MIE"
-    const val RICE = "RICE"
+    const val ALL = 0
+    const val COFFE = 1
+    const val MIE = 2
+    const val RICE = 3
 }
 
 @Entity(

@@ -7,42 +7,26 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.button.MaterialButton
 import com.myproject.warkopgundar.databinding.FragmentDashboardMenuBinding
+import com.myproject.warkopgundar.utils.showErrorSnackBar
+import com.myproject.warkopgundar.utils.showSuccessSnackBar
+import kotlinx.coroutines.launch
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 class DashboardMenuFragment : Fragment() {
     private lateinit var menuAdapter: MenuAdapter
+    private lateinit var db: AppDatabase
 
     private var _binding: FragmentDashboardMenuBinding? = null
     private val binding get() = _binding!!
     private var param1: String? = null
     private var param2: String? = null
 
-    private val allMenuItems = listOf(
-        // --- KATEGORI KOPI ---
-        MenuModel(1, "Cappuccino", "With Steamed Milk", "IDR 8.000", "4.5", "12K", R.drawable.img_menu_coffe, MenuCategory.COFFE),
-        MenuModel(2, "Espresso", "Strong & Bold", "IDR 10.000", "4.7", "8K", R.drawable.img_menu_coffe, MenuCategory.COFFE),
-        MenuModel(3, "Coffee Latte", "Creamy Texture", "IDR 12.000", "4.6", "15K", R.drawable.img_menu_coffe, MenuCategory.COFFE),
-        MenuModel(4, "Americano", "Pure Black Coffee", "IDR 7.000", "4.4", "10K", R.drawable.img_menu_coffe, MenuCategory.COFFE),
-        MenuModel(5, "Moccachino", "Coffee & Chocolate", "IDR 13.000", "4.8", "9K", R.drawable.img_menu_coffe, MenuCategory.COFFE),
-
-        // --- KATEGORI MIE ---
-        MenuModel(6, "Indomie Kuah", "Extra Telur", "IDR 12.000", "4.8", "167K", R.drawable.img_menu_mie, MenuCategory.MIE),
-        MenuModel(7, "Indomie Goreng", "Double Porsi", "IDR 15.000", "4.9", "200K", R.drawable.img_menu_mie, MenuCategory.MIE),
-        MenuModel(8, "Mie Nyemek", "Pedas Level 5", "IDR 14.000", "4.7", "50K", R.drawable.img_menu_mie, MenuCategory.MIE),
-        MenuModel(9, "Mie Ayam Bakso", "Pangsit Goreng", "IDR 18.000", "4.6", "30K", R.drawable.img_menu_mie, MenuCategory.MIE),
-        MenuModel(10, "Mie Goreng Aceh", "Rempah Spesial", "IDR 17.000", "4.5", "25K", R.drawable.img_menu_mie, MenuCategory.MIE),
-
-        // --- KATEGORI NASI ---
-        MenuModel(11, "Nasi Goreng", "Ayam Suwir", "IDR 15.000", "4.9", "80K", R.drawable.img_menu_rice, MenuCategory.RICE),
-        MenuModel(12, "Nasi Gila", "Sosis & Bakso", "IDR 18.000", "4.8", "40K", R.drawable.img_menu_rice, MenuCategory.RICE),
-        MenuModel(13, "Nasi Ayam Geprek", "Sambal Bawang", "IDR 20.000", "4.7", "100K", R.drawable.img_menu_rice, MenuCategory.RICE),
-        MenuModel(14, "Nasi Kuning", "Lauk Komplit", "IDR 12.000", "4.6", "20K", R.drawable.img_menu_rice, MenuCategory.RICE),
-        MenuModel(15, "Nasi Uduk", "Semur Jengkol", "IDR 13.000", "4.5", "15K", R.drawable.img_menu_rice, MenuCategory.RICE)
-    )
+    private var allMenuItems: List<Menu> = listOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,31 +46,31 @@ class DashboardMenuFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         menuAdapter = MenuAdapter { menu -> navigateToDetail(menu) }
+        db = AppDatabase.getDatabase(requireContext())
 
-        setupSections()
+        serviceGetAllMenu()
         setupActionCategory()
     }
 
-    private fun setupSections() {
+    private fun setupSections(listMenu: List<Menu>) {
         binding.sectionKopi.tvCategoryTitle.text = "Kopi"
         val adapterKopi = MenuAdapter{menu -> navigateToDetail(menu)}.apply { isGridView = true }
         binding.sectionKopi.rvHorizontalMenu.adapter = adapterKopi
-        adapterKopi.submitList(allMenuItems.filter { it.category == MenuCategory.COFFE })
+        adapterKopi.submitList(listMenu.filter { it.categoryId == MenuCategory.COFFE })
 
         binding.sectionMie.tvCategoryTitle.text = "Mie"
         val adapterMie = MenuAdapter{menu -> navigateToDetail(menu)}.apply { isGridView = true }
         binding.sectionMie.rvHorizontalMenu.adapter = adapterMie
-        adapterMie.submitList(allMenuItems.filter { it.category == MenuCategory.MIE })
+        adapterMie.submitList(listMenu.filter { it.categoryId == MenuCategory.MIE })
 
         binding.sectionNasi.tvCategoryTitle.text = "Nasi"
         val adapterNasi = MenuAdapter{menu -> navigateToDetail(menu)}.apply { isGridView = true }
         binding.sectionNasi.rvHorizontalMenu.adapter = adapterNasi
-        adapterNasi.submitList(allMenuItems.filter { it.category == MenuCategory.RICE })
+        adapterNasi.submitList(listMenu.filter { it.categoryId == MenuCategory.RICE })
     }
 
-    private fun navigateToDetail(menu: MenuModel) {
+    private fun navigateToDetail(menu: Menu) {
         (requireActivity() as? BaseActivity)?.navigateToWithData(
             destination = MenuDetailActivity::class.java,
             extra = menu,
@@ -118,23 +102,19 @@ class DashboardMenuFragment : Fragment() {
         }
     }
 
-    private fun showFilteredMenu(category: String) {
-        if (!::menuAdapter.isInitialized) {
-            menuAdapter = MenuAdapter {menu -> navigateToDetail(menu)}
-        }
-
+    private fun showFilteredMenu(categoryId: Int) {
         binding.containerMenu.visibility = View.GONE
         binding.containerMenuFiltered.visibility = View.VISIBLE
 
-        val filteredList = allMenuItems.filter { it.category == category }
+        val filteredAdapter = MenuAdapter {menu -> navigateToDetail(menu)}
+        filteredAdapter.isGridView = false
 
-        menuAdapter.isGridView = false
         binding.containerMenuFiltered.apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = menuAdapter
+            adapter = filteredAdapter
         }
 
-        menuAdapter.submitList(filteredList)
+        serviceGetByCategory(categoryId, filteredAdapter)
     }
 
     private fun updateUi(actionActive: MaterialButton) {
@@ -153,8 +133,8 @@ class DashboardMenuFragment : Fragment() {
         }
     }
 
-    fun applyFilter(category: String) {
-        when (category) {
+    fun applyFilter(categoryId: Int) {
+        when (categoryId) {
             MenuCategory.COFFE -> {
                 showFilteredMenu(MenuCategory.COFFE)
                 updateUi(binding.actionCategoryCoffe)
@@ -171,6 +151,35 @@ class DashboardMenuFragment : Fragment() {
                 binding.containerMenu.visibility =  View.VISIBLE
                 binding.containerMenuFiltered.visibility = View.GONE
                 updateUi(binding.actionCategoryAll)
+            }
+        }
+    }
+
+    private fun serviceGetAllMenu() {
+        lifecycleScope.launch {
+            try {
+                db.menuDao().getAllMenu().collect { listMenu ->
+                    allMenuItems = listMenu
+                    setupSections(listMenu)
+                }
+            } catch (e: android.database.sqlite.SQLiteConstraintException) {
+                binding.root.showErrorSnackBar("Terjadi kesalahan tidak terduga, please try again later", binding.containerMenu)
+            } catch (e: Exception) {
+                binding.root.showErrorSnackBar("Terjadi kesalahan sistem, please try again later", binding.containerMenu)
+            }
+        }
+    }
+
+    private fun serviceGetByCategory(categoryId: Int, adapter: MenuAdapter) {
+        lifecycleScope.launch {
+            try {
+                db.menuDao().getMenuByCategory(categoryId).collect { listMenu ->
+                    adapter.submitList(listMenu)
+                }
+            } catch (e: android.database.sqlite.SQLiteConstraintException) {
+                binding.root.showErrorSnackBar("Terjadi kesalahan tidak terduga, please try again later", binding.containerMenu)
+            } catch (e: Exception) {
+                binding.root.showErrorSnackBar("Terjadi kesalahan sistem, please try again later", binding.containerMenu)
             }
         }
     }

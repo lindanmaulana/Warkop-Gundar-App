@@ -39,7 +39,7 @@ class DashboardActivity : BaseActivity() {
 
     private fun handleIntentNavigation(intent: Intent?) {
         val targetMenuId = intent?.getIntExtra("TARGET_MENU_ID", R.id.actionHome) ?: R.id.actionHome
-        val categoryFilter = intent?.getStringExtra(ExtraKey.CATEGORY.value)
+        val categoryFilterId = intent?.getIntExtra(ExtraKey.CATEGORY.value, -1) ?: -1
 
         when(targetMenuId) {
             R.id.actionHome -> binding.actionHome.performClick()
@@ -48,11 +48,11 @@ class DashboardActivity : BaseActivity() {
             R.id.actionSetting -> binding.actionSetting.performClick()
         }
 
-        if (targetMenuId == R.id.actionMenu && categoryFilter != null) {
+        if (targetMenuId == R.id.actionMenu && categoryFilterId != null) {
             binding.root.postDelayed({
                 val menuFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainer)
                 if (menuFragment is DashboardMenuFragment) {
-                    menuFragment.applyFilter(categoryFilter)
+                    menuFragment.applyFilter(categoryFilterId)
                 }
             }, 400)
         }
