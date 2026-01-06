@@ -49,12 +49,22 @@ class DashboardActivity : BaseActivity() {
         }
 
         if (targetMenuId == R.id.actionMenu && categoryFilterId != null) {
-            binding.root.postDelayed({
-                val menuFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainer)
-                if (menuFragment is DashboardMenuFragment) {
-                    menuFragment.applyFilter(categoryFilterId)
-                }
-            }, 400)
+            val bundle = Bundle().apply {
+                putInt("SELECTED_CATEGORY", categoryFilterId)
+            }
+
+            val menuFragment = DashboardMenuFragment().apply {
+                arguments = bundle
+            }
+
+            supportFragmentManager.beginTransaction().replace(R.id.fragmentContainer, menuFragment).commit()
+//            binding.root.postDelayed({
+//                val menuFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainer)
+//
+//                if (menuFragment is DashboardMenuFragment && menuFragment.isAdded) {
+//                    menuFragment.applyFilter(categoryFilterId)
+//                }
+//            }, 400)
         }
     }
 

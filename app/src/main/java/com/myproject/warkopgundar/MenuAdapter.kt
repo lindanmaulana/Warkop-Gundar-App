@@ -13,7 +13,12 @@ import com.google.android.material.imageview.ShapeableImageView
 class MenuAdapter(private val onItemClick: (Menu) -> Unit) : ListAdapter<Menu, RecyclerView.ViewHolder>(DiffCallback()) {
     private val TYPE_GRID = 1
     private val TYPE_LIST = 2
+//    var isGridView: Boolean = true
     var isGridView: Boolean = true
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
 
     override fun getItemViewType(position: Int): Int {
         return if (isGridView) TYPE_GRID else TYPE_LIST
@@ -21,13 +26,22 @@ class MenuAdapter(private val onItemClick: (Menu) -> Unit) : ListAdapter<Menu, R
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        return if (viewType == TYPE_GRID) {
+        val holder = if (viewType == TYPE_GRID) {
             val view = inflater.inflate(R.layout.item_menu_grid, parent, false)
             GridViewHolder(view)
         } else {
             val view = inflater.inflate(R.layout.item_menu_list, parent, false)
             ListViewHolder(view)
         }
+
+        holder.itemView.setOnClickListener {
+            val position = holder.bindingAdapterPosition
+            if (position != RecyclerView.NO_POSITION) {
+                onItemClick(getItem(position))
+            }
+        }
+
+        return holder
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {

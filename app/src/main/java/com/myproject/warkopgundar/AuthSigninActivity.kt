@@ -94,9 +94,9 @@ class AuthSigninActivity : BaseActivity() {
                 kotlinx.coroutines.delay(1000)
 
                 navigateTo(DashboardActivity::class.java, isFinal = true)
-            } catch (e: android.database.sqlite.SQLiteConstraintException) {
-                binding.root.showErrorSnackBar("Terjadi kesalahan tidak terduga, please try again later", binding.actionSignin)
             } catch (e: Exception) {
+                if (e is kotlinx.coroutines.CancellationException) throw e
+
                 binding.root.showErrorSnackBar("Terjadi kesalahan sistem, please try again later", binding.actionSignin)
             }
         }

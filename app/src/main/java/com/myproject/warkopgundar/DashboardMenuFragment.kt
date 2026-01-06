@@ -51,6 +51,12 @@ class DashboardMenuFragment : Fragment() {
 
         serviceGetAllMenu()
         setupActionCategory()
+
+        val categoryId = arguments?.getInt("SELECTED_CATEGORY", -1) ?: -1
+
+        if (categoryId != -1) {
+            applyFilter(categoryId)
+        }
     }
 
     private fun setupSections(listMenu: List<Menu>) {
@@ -134,6 +140,8 @@ class DashboardMenuFragment : Fragment() {
     }
 
     fun applyFilter(categoryId: Int) {
+        if (_binding == null) return
+
         when (categoryId) {
             MenuCategory.COFFE -> {
                 showFilteredMenu(MenuCategory.COFFE)
@@ -156,30 +164,51 @@ class DashboardMenuFragment : Fragment() {
     }
 
     private fun serviceGetAllMenu() {
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             try {
                 db.menuDao().getAllMenu().collect { listMenu ->
-                    allMenuItems = listMenu
-                    setupSections(listMenu)
+                    _binding?.let {
+                        allMenuItems = listMenu
+                        setupSections(listMenu)
+                    }
                 }
-            } catch (e: android.database.sqlite.SQLiteConstraintException) {
-                binding.root.showErrorSnackBar("Terjadi kesalahan tidak terduga, please try again later", binding.containerMenu)
             } catch (e: Exception) {
-                binding.root.showErrorSnackBar("Terjadi kesalahan sistem, please try again later", binding.containerMenu)
+                if (e is kotlinx.coroutines.CancellationException) {
+                    throw e
+                }
+                android.util.Log.e("DATABASE_ERROR", "Error getAllMenu: ${e.message}")
+
+                _binding?.let {
+                    if (isAdded) {
+                        val activityRoot = requireActivity().findViewById<View>(android.R.id.content)
+                        activityRoot.showErrorSnackBar("Gagal memuat semua menu", activityRoot)
+                    }
+                }
             }
         }
     }
 
     private fun serviceGetByCategory(categoryId: Int, adapter: MenuAdapter) {
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             try {
                 db.menuDao().getMenuByCategory(categoryId).collect { listMenu ->
-                    adapter.submitList(listMenu)
+                    _binding?.let {
+                        adapter.submitList(listMenu)
+                    }
                 }
-            } catch (e: android.database.sqlite.SQLiteConstraintException) {
-                binding.root.showErrorSnackBar("Terjadi kesalahan tidak terduga, please try again later", binding.containerMenu)
             } catch (e: Exception) {
-                binding.root.showErrorSnackBar("Terjadi kesalahan sistem, please try again later", binding.containerMenu)
+                if (e is kotlinx.coroutines.CancellationException) {
+                    throw e
+                }
+
+                android.util.Log.e("DATABASE_ERROR", "Error getByCategory: ${e.message}")
+
+                _binding?.let {
+                    if (isAdded) {
+                        val activityRoot = requireActivity().findViewById<View>(android.R.id.content)
+                        activityRoot.showErrorSnackBar("Gagal memuat kategori", activityRoot)
+                    }
+                }
             }
         }
     }
