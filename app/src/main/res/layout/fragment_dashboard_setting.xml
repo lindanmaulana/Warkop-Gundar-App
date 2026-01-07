@@ -81,7 +81,7 @@
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_m"
             android:backgroundTint="@color/white"
             android:clipChildren="true"
@@ -96,16 +96,12 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:shapeAppearanceOverlay="@style/TopRoundedCornerCard1">
 
-            <androidx.core.widget.NestedScrollView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingBottom="68dp"
-                android:fillViewport="true">
-                <LinearLayout
+            <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:background="@android:color/white"
+                    android:paddingBottom="72dp"
                     android:layout_marginVertical="@dimen/spacing_l"
                     android:layout_marginHorizontal="@dimen/second_margin">
 
@@ -305,7 +301,6 @@
                     </LinearLayout>
 
                 </LinearLayout>
-            </androidx.core.widget.NestedScrollView>
         </com.google.android.material.card.MaterialCardView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

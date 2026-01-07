@@ -2,6 +2,8 @@ package com.myproject.warkopgundar.utils
 
 import android.view.View
 import com.google.android.material.snackbar.Snackbar
+import java.text.NumberFormat
+import java.util.Locale
 
 fun View.showErrorSnackBar(message: String, anchor: View? = null) {
     Snackbar.make(this, message, Snackbar.LENGTH_SHORT).apply {
@@ -19,6 +21,15 @@ fun View.showSuccessSnackBar(message: String, anchor: View? = null) {
         setAction("OK") { }
         show()
     }
+}
+
+fun Int.toParseCurrency(): String {
+    val localeID = Locale.forLanguageTag("id-ID")
+    val formatRupiah = NumberFormat.getCurrencyInstance(localeID)
+
+    formatRupiah.maximumFractionDigits = 0
+
+    return formatRupiah.format(this.toDouble()).replace("Rp", "Rp ")
 }
 
 fun View.gone() { this.visibility = View.GONE }

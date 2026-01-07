@@ -80,6 +80,7 @@ class DashboardMenuFragment : Fragment() {
         (requireActivity() as? BaseActivity)?.navigateToWithData(
             destination = MenuDetailActivity::class.java,
             extra = menu,
+            key = ExtraKey.MENU
         )
     }
 

@@ -6,18 +6,6 @@ import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
 
-@Parcelize
-data class MenuModel(
-    val id: Int,
-    val name: String,
-    val description: String,
-    val price: String,
-    val rating: String,
-    val likes: String,
-    val imageRes: Int,
-    val category: String
-): Parcelable
-
 object MenuCategory {
     const val ALL = 0
     const val COFFE = 1
@@ -25,6 +13,7 @@ object MenuCategory {
     const val RICE = 3
 }
 
+@Parcelize
 @Entity(
     tableName = "menus",
     foreignKeys = [
@@ -46,4 +35,4 @@ data class Menu(
     val likes: Int?,
     val imageRes: Int?,
     val categoryId: Int
-)
+): Parcelable

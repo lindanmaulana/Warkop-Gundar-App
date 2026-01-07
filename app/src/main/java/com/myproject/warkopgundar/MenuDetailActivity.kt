@@ -2,9 +2,11 @@ package com.myproject.warkopgundar
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
+import androidx.core.content.IntentCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.myproject.warkopgundar.databinding.ActivityMenuDetailBinding
+import com.myproject.warkopgundar.utils.toParseCurrency
 
 class MenuDetailActivity : BaseActivity() {
     private lateinit var binding: ActivityMenuDetailBinding
@@ -14,6 +16,19 @@ class MenuDetailActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
+        val dataMenu = IntentCompat.getParcelableExtra(intent, ExtraKey.MENU.value, Menu::class.java)
+
+        if (dataMenu != null) setupDetailmenu(dataMenu)
+        setupActions()
+        setContentView(binding.root)
+        ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
+    }
+
+    private fun setupActions() {
         binding.actionBack.setOnClickListener {
             navigateTo(DashboardActivity::class.java, R.id.actionMenu, typeTransition = AnimType.SLIDE, isFinal = true)
         }
@@ -27,12 +42,12 @@ class MenuDetailActivity : BaseActivity() {
             successDialog.show(supportFragmentManager, "success_dialog")
             binding.etNote.text?.clear()
         }
+    }
 
-        setContentView(binding.root)
-        ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+    private fun setupDetailmenu(data: Menu) {
+        binding.tvMenuName.text = data.name
+        binding.tvMenuPrice.text = data.price.toParseCurrency()
+        binding.tvMenuDescription.text = data.description
+        binding.imgMenu.setImageResource(data.imageRes ?: R.drawable.img_placeholder)
     }
 }

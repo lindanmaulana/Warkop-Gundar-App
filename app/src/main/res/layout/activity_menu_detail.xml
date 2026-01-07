@@ -8,7 +8,7 @@
     android:background="#F8F8F8">
 
     <ImageView
-        android:id="@+id/imgDetail"
+        android:id="@+id/imgMenu"
         android:layout_width="match_parent"
         android:layout_height="350dp"
         android:scaleType="centerCrop"
@@ -79,7 +79,7 @@
         app:cardUseCompatPadding="false"
         app:cardPreventCornerOverlap="false"
         app:layout_constraintBottom_toTopOf="@id/layoutAction"
-        app:layout_constraintTop_toBottomOf="@id/imgDetail"
+        app:layout_constraintTop_toBottomOf="@id/imgMenu"
         app:shapeAppearanceOverlay="@style/TopRoundedCornerCard3">
 
         <androidx.core.widget.NestedScrollView
@@ -98,7 +98,7 @@
                     android:layout_height="wrap_content">
 
                     <TextView
-                        android:id="@+id/tvMenuTitle"
+                        android:id="@+id/tvMenuName"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="Espresso Coffee"
@@ -110,14 +110,14 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/tvSubtitleDetail"
+                        android:id="@+id/tvMenuPrice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="with Chocolate"
-                        android:textColor="@color/gray"
+                        android:text="Rp 20.000"
+                        android:textColor="@color/primary"
                         android:textSize="14sp"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tvMenuTitle" />
+                        app:layout_constraintTop_toBottomOf="@id/tvMenuName" />
 
                     <LinearLayout
                         android:id="@+id/layoutRating"
