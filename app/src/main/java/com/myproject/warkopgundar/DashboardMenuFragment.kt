@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.button.MaterialButton
@@ -19,6 +20,8 @@ private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 class DashboardMenuFragment : Fragment() {
     private lateinit var menuAdapter: MenuAdapter
+    private val cartViewModel: CartViewModel by activityViewModels()
+    private lateinit var session: SessionManager
     private lateinit var db: AppDatabase
 
     private var _binding: FragmentDashboardMenuBinding? = null
@@ -46,8 +49,12 @@ class DashboardMenuFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        menuAdapter = MenuAdapter { menu -> navigateToDetail(menu) }
+        menuAdapter = MenuAdapter(
+            onItemClick = { menu -> navigateToDetail(menu) },
+            onAddClick = { menu -> onAddMenuClicked(menu) }
+        )
         db = AppDatabase.getDatabase(requireContext())
+        session = SessionManager(requireContext())
 
         serviceGetAllMenu()
         setupActionCategory()
@@ -61,17 +68,26 @@ class DashboardMenuFragment : Fragment() {
 
     private fun setupSections(listMenu: List<Menu>) {
         binding.sectionKopi.tvCategoryTitle.text = "Kopi"
-        val adapterKopi = MenuAdapter{menu -> navigateToDetail(menu)}.apply { isGridView = true }
+        val adapterKopi = MenuAdapter(
+            onItemClick = { menu -> navigateToDetail(menu) },
+            onAddClick = { menu -> onAddMenuClicked(menu) }
+        ).apply { isGridView = true }
         binding.sectionKopi.rvHorizontalMenu.adapter = adapterKopi
         adapterKopi.submitList(listMenu.filter { it.categoryId == MenuCategory.COFFE })
 
         binding.sectionMie.tvCategoryTitle.text = "Mie"
-        val adapterMie = MenuAdapter{menu -> navigateToDetail(menu)}.apply { isGridView = true }
+        val adapterMie = MenuAdapter(
+            onItemClick = { menu -> navigateToDetail(menu) },
+            onAddClick = { menu -> onAddMenuClicked(menu) }
+        ).apply { isGridView = true }
         binding.sectionMie.rvHorizontalMenu.adapter = adapterMie
         adapterMie.submitList(listMenu.filter { it.categoryId == MenuCategory.MIE })
 
         binding.sectionNasi.tvCategoryTitle.text = "Nasi"
-        val adapterNasi = MenuAdapter{menu -> navigateToDetail(menu)}.apply { isGridView = true }
+        val adapterNasi = MenuAdapter(
+            onItemClick = { menu -> navigateToDetail(menu) },
+            onAddClick = { menu -> onAddMenuClicked(menu) }
+        ).apply { isGridView = true }
         binding.sectionNasi.rvHorizontalMenu.adapter = adapterNasi
         adapterNasi.submitList(listMenu.filter { it.categoryId == MenuCategory.RICE })
     }
@@ -113,7 +129,10 @@ class DashboardMenuFragment : Fragment() {
         binding.containerMenu.visibility = View.GONE
         binding.containerMenuFiltered.visibility = View.VISIBLE
 
-        val filteredAdapter = MenuAdapter {menu -> navigateToDetail(menu)}
+        val filteredAdapter = MenuAdapter(
+            onItemClick = { menu -> navigateToDetail(menu) },
+            onAddClick = { menu -> onAddMenuClicked(menu) }
+        )
         filteredAdapter.isGridView = false
 
         binding.containerMenuFiltered.apply {
@@ -161,6 +180,15 @@ class DashboardMenuFragment : Fragment() {
                 binding.containerMenuFiltered.visibility = View.GONE
                 updateUi(binding.actionCategoryAll)
             }
+        }
+    }
+
+    private fun onAddMenuClicked(menu: Menu) {
+        val userId = session.getUserId()
+        if (userId != -1) {
+            cartViewModel.addToCart(menu, userId)
+            val successDialog = DialogSuccess("Berhasil Ditambahkan ke keranjang")
+            successDialog.show(parentFragmentManager, "success_dialog")
         }
     }
 

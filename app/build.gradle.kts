@@ -57,5 +57,9 @@ dependencies {
     implementation(libs.lottie.android)
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
+    implementation(libs.glide.android)
+    implementation(libs.androidx.activity.ktx)
+    implementation(libs.androidx.fragment.ktx)
+    ksp(libs.glide.ksp)
     ksp(libs.androidx.room.compiler)
 }

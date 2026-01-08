@@ -7,13 +7,14 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.DiffUtil
 import android.view.View
 import android.widget.TextView
+import com.bumptech.glide.Glide
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.imageview.ShapeableImageView
+import com.myproject.warkopgundar.utils.toParseCurrency
 
-class MenuAdapter(private val onItemClick: (Menu) -> Unit) : ListAdapter<Menu, RecyclerView.ViewHolder>(DiffCallback()) {
+class MenuAdapter( private val onItemClick: (Menu) -> Unit, private val onAddClick: (Menu) -> Unit) : ListAdapter<Menu, RecyclerView.ViewHolder>(DiffCallback()) {
     private val TYPE_GRID = 1
     private val TYPE_LIST = 2
-//    var isGridView: Boolean = true
     var isGridView: Boolean = true
         set(value) {
             field = value
@@ -48,13 +49,13 @@ class MenuAdapter(private val onItemClick: (Menu) -> Unit) : ListAdapter<Menu, R
         val item = getItem(position)
 
         when(holder) {
-            is GridViewHolder -> holder.bind(item)
+            is GridViewHolder -> holder.bind(item, onAddClick)
             is ListViewHolder -> holder.bind(item)
         }
 
-        holder.itemView.setOnClickListener {
-            onItemClick(item)
-        }
+//        holder.itemView.setOnClickListener {
+//            onItemClick(item)
+//        }
     }
 }
 
@@ -73,14 +74,23 @@ class GridViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     val tvTitle: TextView = view.findViewById(R.id.tvTitle)
     val tvSubtitle: TextView = view.findViewById(R.id.tvSubtitle)
     val tvPrice: TextView = view.findViewById(R.id.tvPrice)
-    val btnAdd: MaterialButton = view.findViewById(R.id.btnAdd)
+    val actionAddToCart: MaterialButton = view.findViewById(R.id.actionAddToCart)
 
-    fun bind(item: Menu) {
+    fun bind(item: Menu, onAddClick: (Menu) -> Unit) {
         tvTitle.text = item.name
         tvSubtitle.text = item.description
-        tvPrice.text = "Rp ${item.price}"
-        imgMenu.setImageResource(item.imageRes ?: R.drawable.img_placeholder)
+        tvPrice.text = item.price.toParseCurrency()
+        Glide.with(itemView.context)
+            .load(item.imageRes)
+            .placeholder(R.drawable.img_placeholder)
+            .error(R.drawable.img_placeholder)
+            .centerCrop()
+            .into(imgMenu)
         // Tambahkan logic klik tombol jika perlu
+
+        actionAddToCart.setOnClickListener {
+            onAddClick(item)
+        }
     }
 }
 
@@ -91,8 +101,13 @@ class ListViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
     fun bind(item: Menu) {
         tvTitle.text = item.name
-        tvPrice.text = "Rp ${item.price}"
-        imgMenu.setImageResource(item.imageRes ?: R.drawable.img_placeholder)
+        tvPrice.text = item.price.toParseCurrency()
+        Glide.with(itemView.context)
+            .load(item.imageRes)
+            .placeholder(R.drawable.img_placeholder)
+            .error(R.drawable.img_placeholder)
+            .centerCrop()
+            .into(imgMenu)
         // tvLikes.text = item.likes
     }
 }

@@ -1,24 +1,47 @@
 package com.myproject.warkopgundar
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.core.content.IntentCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.ViewModel
 import com.myproject.warkopgundar.databinding.ActivityMenuDetailBinding
 import com.myproject.warkopgundar.utils.toParseCurrency
 
 class MenuDetailActivity : BaseActivity() {
     private lateinit var binding: ActivityMenuDetailBinding
+    private lateinit var session: SessionManager
+    private val cartViewModel: CartViewModel by viewModels()
+    private var menu: Menu? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityMenuDetailBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
+        session = SessionManager(this@MenuDetailActivity)
         val dataMenu = IntentCompat.getParcelableExtra(intent, ExtraKey.MENU.value, Menu::class.java)
 
-        if (dataMenu != null) setupDetailmenu(dataMenu)
+        if (dataMenu == null) {
+            navigateTo(DashboardActivity::class.java, R.id.actionMenu, isFinal = true)
+            return
+        }
+
+        this.menu = dataMenu
+        setupDetailmenu(dataMenu)
+
+        if (!session.isLoggedIn()) {
+            session.logout()
+            navigateToWithData(
+                destination = AuthSigninActivity::class.java,
+                extra = "Sesi kamu berakhir. Harap untuk masuk kembali!",
+                key = ExtraKey.SESSION_EXPIRED,
+                isFinal = true)
+        }
+
         setupActions()
         setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
@@ -30,7 +53,7 @@ class MenuDetailActivity : BaseActivity() {
 
     private fun setupActions() {
         binding.actionBack.setOnClickListener {
-            navigateTo(DashboardActivity::class.java, R.id.actionMenu, typeTransition = AnimType.SLIDE, isFinal = true)
+            navigateTo(DashboardActivity::class.java, R.id.actionMenu, typeTransition = AnimType.SLIDE)
         }
 
         binding.actionCheckout.setOnClickListener {
@@ -38,7 +61,13 @@ class MenuDetailActivity : BaseActivity() {
         }
 
         binding.actionAddToCart.setOnClickListener {
-            val successDialog = DialogSuccess("Berhasil Ditambahkan ke favorite")
+            menu?.let { data ->
+                val userId = session.getUserId()
+
+                if (userId != -1) cartViewModel.addToCart(data, session.getUserId())
+            }
+
+            val successDialog = DialogSuccess("Berhasil Ditambahkan ke keranjang")
             successDialog.show(supportFragmentManager, "success_dialog")
             binding.etNote.text?.clear()
         }

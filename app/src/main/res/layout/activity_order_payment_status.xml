@@ -11,173 +11,215 @@
     android:clipToPadding="false"
     tools:context=".OrderPaymentStatusActivity">
 
+    <!-- ICON SUCCESS -->
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/ivSuccess"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
         android:layout_marginBottom="6dp"
         app:srcCompat="@drawable/icon_check_success"
         app:layout_constraintBottom_toTopOf="@id/tvSuccessTitle"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
+    <!-- TITLE -->
     <TextView
         android:id="@+id/tvSuccessTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
-        android:text="Success"
+        android:text="Pembayaran Berhasil"
         android:textColor="#222831"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@id/tvSubtitle"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
+    <!-- SUBTITLE -->
     <TextView
         android:id="@+id/tvSubtitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="35dp"
-        android:text="Anda telah berhasil mentransfer uang."
+        android:layout_marginBottom="28dp"
+        android:text="Terima kasih, pembayaran Anda telah diterima."
         android:textColor="#9E9E9E"
+        android:textSize="14sp"
         app:layout_constraintBottom_toTopOf="@id/tvAmountBox"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
+    <!-- AMOUNT -->
     <TextView
         android:id="@+id/tvAmountBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="61dp"
+        android:layout_marginBottom="12dp"
         android:background="@color/primary"
         android:paddingHorizontal="40dp"
-        android:paddingVertical="20dp"
+        android:paddingVertical="18dp"
         android:text="Rp 32.000"
         android:textColor="@android:color/white"
         android:textSize="32sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/layoutDetail"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintBottom_toTopOf="@id/tvOrderCode"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
-    <LinearLayout
-        android:id="@+id/layoutDetail"
+    <!-- ORDER CODE -->
+    <TextView
+        android:id="@+id/tvOrderCode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="36dp"
+        android:text="Kode Pesanan: ORD-20260105-9F3A"
+        android:textColor="#607D8B"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/cardDetail"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- CARD DETAIL -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardDetail"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="22dp"
         android:layout_marginHorizontal="@dimen/main_margin"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@id/actionNext"
+        android:layout_marginBottom="24dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="4dp"
+        app:strokeWidth="1dp"
+        app:strokeColor="#EEEEEE"
+        app:layout_constraintBottom_toTopOf="@id/actionFinish"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Dari:"
-                android:textColor="#222831" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:text="Nama: Adam"
-                android:textColor="#222831" />
-        </RelativeLayout>
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/white"
+            android:padding="16dp">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="BCA"
-                android:textColor="#9E9E9E" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:text="299***77"
-                android:textColor="#9E9E9E" />
-        </RelativeLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginVertical="8dp"
-            android:background="#EEEEEE" />
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Untuk:"
-                android:textColor="#222831" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:text="Nama: Warkop Gundar"
-                android:textColor="#222831" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="QRIS"
-                android:textColor="#9E9E9E" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:text="299***77"
-                android:textColor="#9E9E9E" />
-        </RelativeLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginVertical="8dp"
-            android:background="#EEEEEE" />
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Tanggal"
+                android:text="Detail Transaksi"
+                android:textStyle="bold"
+                android:textSize="16sp"
                 android:textColor="#222831"
-                android:textSize="16sp" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:text="5 Januari 2026"
-                android:textColor="#222831"
-                android:textSize="16sp" />
-        </RelativeLayout>
-    </LinearLayout>
+                android:layout_marginBottom="12dp"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Dari"
+                    android:textColor="#222831"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:text="Adam"
+                    android:textColor="#222831"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="BCA"
+                    android:textColor="#9E9E9E"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:text="299***77"
+                    android:textColor="#9E9E9E"/>
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginVertical="12dp"
+                android:background="#F0F0F0"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Untuk"
+                    android:textColor="#222831"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:text="Warkop Gundar"
+                    android:textColor="#222831"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="QRIS"
+                    android:textColor="#9E9E9E"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:text="299***77"
+                    android:textColor="#9E9E9E"/>
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginVertical="12dp"
+                android:background="#F0F0F0"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tanggal"
+                    android:textSize="14sp"
+                    android:textColor="#222831"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:text="5 Januari 2026"
+                    android:textSize="14sp"
+                    android:textColor="#222831"/>
+            </RelativeLayout>
+
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/actionNext"
+        android:id="@+id/actionFinish"
         android:layout_width="0dp"
         android:layout_height="56dp"
         android:layout_marginBottom="@dimen/main_margin"
         android:layout_marginHorizontal="@dimen/main_margin"
-        android:text="Continue"
+        android:text="Selesai"
         android:textAllCaps="false"
         app:backgroundTint="@color/primary"
-        app:cornerRadius="12dp"
+        app:cornerRadius="14dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

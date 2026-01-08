@@ -7,18 +7,24 @@ class SessionManager(context: Context) {
     private val PREF_NAME = "SESSION-WARKOPGUNDAR"
     private val IS_LOGIN = "is_login"
     private val KEY_PHONENUMBER = "user_phoneNumber"
+    private val KEY_USERID = "user_id"
 
     private val pref: SharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
     private val editor: SharedPreferences.Editor = pref.edit()
 
-    fun createLoginSession(phoneNumber: String) {
+    fun createLoginSession(userId: Int, phoneNumber: String) {
         editor.putBoolean(IS_LOGIN, true)
+        editor.putInt(KEY_USERID, userId)
         editor.putString(KEY_PHONENUMBER, phoneNumber)
         editor.commit()
     }
 
     fun getPhoneNumber(): String? {
         return pref.getString(KEY_PHONENUMBER, null)
+    }
+
+    fun getUserId(): Int {
+        return pref.getInt(KEY_USERID, -1)
     }
 
     fun isLoggedIn(): Boolean {

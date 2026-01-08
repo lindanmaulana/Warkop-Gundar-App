@@ -90,7 +90,7 @@ class AuthSigninActivity : BaseActivity() {
                 }
 
                 binding.root.showSuccessSnackBar("Login Berhasil", binding.actionSignin)
-                session.createLoginSession(result.phoneNumber)
+                session.createLoginSession(result.id, result.phoneNumber)
                 kotlinx.coroutines.delay(1000)
 
                 navigateTo(DashboardActivity::class.java, isFinal = true)
