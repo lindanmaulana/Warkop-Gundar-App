@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".AuthSignupActivity">
+    tools:context=".features.auth.AuthSignupActivity">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -42,7 +42,7 @@
                     android:id="@+id/tvTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Sign Up"
+                    android:text="Daftar"
                     android:textColor="#1D2431"
                     android:textSize="32sp"
                     android:textStyle="bold"
@@ -55,7 +55,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="We’ve already met!"
+                    android:text="Mari kita buat akun untuk anda."
                     android:textColor="#9E9E9E"
                     android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -68,7 +68,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:hint="USERNAME"
+                    android:hint="NAMA PENGGUNA"
                     app:boxCornerRadiusBottomEnd="16dp"
                     app:boxCornerRadiusBottomStart="16dp"
                     app:boxCornerRadiusTopEnd="16dp"
@@ -89,7 +89,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:hint="PHONE NUMBER"
+                    android:hint="NOMOR HANDPHONE"
                     app:boxCornerRadiusBottomEnd="16dp"
                     app:boxCornerRadiusBottomStart="16dp"
                     app:boxCornerRadiusTopEnd="16dp"
@@ -110,7 +110,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:hint="PASSWORD"
+                    android:hint="KATA SANDI"
                     app:boxCornerRadiusBottomEnd="16dp"
                     app:boxCornerRadiusBottomStart="16dp"
                     app:boxCornerRadiusTopEnd="16dp"
@@ -132,7 +132,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:hint="RE-PASSWORD"
+                    android:hint="RE-KATA SANDI"
                     app:boxCornerRadiusBottomEnd="16dp"
                     app:boxCornerRadiusBottomStart="16dp"
                     app:boxCornerRadiusTopEnd="16dp"
@@ -147,18 +147,6 @@
                         android:layout_height="wrap_content"
                         android:inputType="textPassword" />
                 </com.google.android.material.textfield.TextInputLayout>
-
-                <TextView
-                    android:id="@+id/actionForgotPassword"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:text="Forgot password?"
-                    android:textColor="#1D2431"
-                    android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tilConfirmPassword" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/actionSignup"
@@ -179,7 +167,7 @@
                     app:iconGravity="end"
                     app:iconTint="@null"
                     app:iconPadding="0dp"
-                    app:layout_constraintTop_toBottomOf="@id/actionForgotPassword" />
+                    app:layout_constraintTop_toBottomOf="@id/tilConfirmPassword" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -199,7 +187,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Already have an account? "
+            android:text="Sudah punya akun? "
             android:textColor="@color/gray" />
 
         <TextView
@@ -208,7 +196,7 @@
             android:layout_height="wrap_content"
             android:clickable="true"
             android:focusable="true"
-            android:text="Sign In"
+            android:text="Masuk"
             android:textColor="@color/primary"
             android:textStyle="bold" />
     </LinearLayout>

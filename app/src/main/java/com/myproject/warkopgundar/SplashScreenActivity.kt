@@ -3,11 +3,15 @@ package com.myproject.warkopgundar
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import com.myproject.warkopgundar.databinding.ActivitySplashScreenBinding
+import com.myproject.warkopgundar.db.AppDatabase
+import com.myproject.warkopgundar.features.dashboard.DashboardActivity
+import com.myproject.warkopgundar.utils.AnimType
+import com.myproject.warkopgundar.utils.BaseActivity
+import com.myproject.warkopgundar.utils.SessionManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch

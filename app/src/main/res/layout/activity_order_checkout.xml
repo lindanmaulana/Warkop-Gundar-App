@@ -105,7 +105,7 @@
                         app:cardCornerRadius="12dp"
                         app:cardElevation="0dp">
                         <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="16dp">
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Payment" android:textColor="#232D3F" android:textSize="16sp" />
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Pembayaran" android:textColor="#232D3F" android:textSize="16sp" />
                             <ImageView android:layout_width="60dp" android:layout_height="24dp" android:layout_alignParentEnd="true" android:src="@drawable/img_payment_qris" /> </RelativeLayout>
                     </com.google.android.material.card.MaterialCardView>
 

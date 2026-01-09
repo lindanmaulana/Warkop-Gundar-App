@@ -8,6 +8,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 // Import ini akan muncul setelah kamu build/sync
 import com.myproject.warkopgundar.databinding.ActivityMainBinding
+import com.myproject.warkopgundar.features.onboarding.OnboardingActivity
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding

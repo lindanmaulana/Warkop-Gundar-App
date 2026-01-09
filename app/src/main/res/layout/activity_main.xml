@@ -62,14 +62,14 @@
         <com.google.android.material.textview.MaterialTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Find Your Favorite"
+            android:text="Temukan Favorit Anda"
             android:textSize="24sp"
             />
 
         <com.google.android.material.textview.MaterialTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Coffe Taste!"
+            android:text="Rasa Kopi!"
             android:textSize="30sp"
             android:textStyle="italic|bold"
             android:textAlignment="center"/>
@@ -77,7 +77,7 @@
         <com.google.android.material.textview.MaterialTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="We’re coffee shop, beer and wine bar, \n&amp; event space for performing arts"
+            android:text="Kami adalah warung kopi dengan \n suasana nyaman untuk berkumpul"
             android:textSize="14sp"
             android:textStyle="normal"
             android:textColor="@color/gray"
@@ -94,7 +94,7 @@
         android:backgroundTint="@color/primary"
         android:paddingStart="32dp"
         android:paddingEnd="4dp"
-        android:text="Get Started"
+        android:text="Mulai"
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="18sp"

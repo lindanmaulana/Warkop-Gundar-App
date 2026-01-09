@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".AuthSigninActivity">
+    tools:context=".features.auth.AuthSigninActivity">
     <ImageView
         android:id="@+id/ivIllustration"
         android:layout_width="240dp"
@@ -45,7 +45,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="We’ve already met!"
+            android:text="Kita sudah pernah ketemu!"
             android:textColor="#9E9E9E"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -58,7 +58,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
-            android:hint="PHONE NUMBER"
+            android:hint="NOMOR HANDPHONE"
             app:boxCornerRadiusBottomEnd="16dp"
             app:boxCornerRadiusBottomStart="16dp"
             app:boxCornerRadiusTopEnd="16dp"
@@ -80,7 +80,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:hint="PASSWORD"
+            android:hint="KATA SANDI"
             app:boxCornerRadiusBottomEnd="16dp"
             app:boxCornerRadiusBottomStart="16dp"
             app:boxCornerRadiusTopEnd="16dp"
@@ -101,7 +101,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Forgot password?"
+            android:text="Lupa kata sandi?"
             android:textColor="#1D2431"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -114,7 +114,7 @@
             android:layout_height="64dp"
             android:layout_marginTop="40dp"
             android:backgroundTint="#1D2431"
-            android:text="Sign In"
+            android:text="Masuk"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="18sp"
@@ -142,7 +142,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Don't have an account? "
+            android:text="Belum punya akun? "
             android:textColor="#9E9E9E" />
 
         <TextView
@@ -151,7 +151,7 @@
             android:layout_height="wrap_content"
             android:clickable="true"
             android:focusable="true"
-            android:text="Sign Up"
+            android:text="Daftar"
             android:textColor="#1D2431"
             android:textStyle="bold" />
     </LinearLayout>

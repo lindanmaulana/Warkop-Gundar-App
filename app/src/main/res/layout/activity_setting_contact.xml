@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/white"
-    tools:context=".SettingContactActivity">
+    tools:context=".features.dashboard.fragments.settings.SettingContactActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbarContact"

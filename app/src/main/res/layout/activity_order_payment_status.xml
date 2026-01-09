@@ -9,7 +9,7 @@
     android:background="@color/white"
     android:clipChildren="false"
     android:clipToPadding="false"
-    tools:context=".OrderPaymentStatusActivity">
+    tools:context=".features.order.OrderPaymentStatusActivity">
 
     <!-- ICON SUCCESS -->
     <com.google.android.material.imageview.ShapeableImageView

@@ -1,0 +1,86 @@
+package com.myproject.warkopgundar.features.onboarding
+
+import android.os.Bundle
+import android.view.View
+import androidx.activity.enableEdgeToEdge
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.tabs.TabLayoutMediator
+import com.myproject.warkopgundar.utils.BaseActivity
+import com.myproject.warkopgundar.features.auth.AuthSigninActivity
+import com.myproject.warkopgundar.databinding.ActivityOnboardingBinding
+
+class OnboardingActivity : BaseActivity() {
+    private lateinit var binding: ActivityOnboardingBinding
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityOnboardingBinding.inflate(layoutInflater)
+        enableEdgeToEdge()
+        setContentView(binding.root)
+
+        val adapter = OnboardingAdapter(this)
+        val viewPager = binding.viewPagerOnboarding
+
+        val tvProgress = binding.tvProgress
+
+        binding.viewPagerOnboarding.adapter = adapter
+
+        binding.actionSkip.setOnClickListener {
+            navigateTo(AuthSigninActivity::class.java, isFinal = true)
+        }
+
+        binding.actionNext.setOnClickListener {
+            val currentItem = viewPager.currentItem
+
+            if (currentItem < adapter.itemCount - 1) {
+                viewPager.setCurrentItem(currentItem + 1, true)
+            } else {
+                navigateTo(AuthSigninActivity::class.java, isFinal = true)
+            }
+        }
+
+        binding.actionPrev.setOnClickListener {
+            val currentItem = viewPager.currentItem
+
+            if (currentItem > 0) {
+                viewPager.setCurrentItem(currentItem - 1, true)
+            } else {
+                onBackPressedDispatcher.onBackPressed()
+            }
+        }
+
+        binding.viewPagerOnboarding.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                tvProgress.text = (position + 1).toString()
+
+                when(position) {
+                    0 -> {
+                        binding.actionPrev.visibility = View.GONE
+                    }
+
+                    2 -> {
+                        binding.actionSkip.visibility = View.GONE
+                        binding.actionNext.text = "Get Started"
+                    }
+
+                    else -> {
+                        binding.actionPrev.visibility = View.VISIBLE
+                        binding.actionSkip.visibility = View.VISIBLE
+                    }
+                }
+            }
+        })
+
+        TabLayoutMediator(binding.tablayout, binding.viewPagerOnboarding) { tab, position ->
+            tab.text = ""
+        }.attach()
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
+    }
+}

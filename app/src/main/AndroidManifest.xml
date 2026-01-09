@@ -14,34 +14,34 @@
         android:theme="@style/Theme.WarkopGundar"
         tools:replace="android:allowBackup">
         <activity
-            android:name=".SettingProfileActivity"
+            android:name=".features.dashboard.fragments.settings.SettingProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".OrderPaymentStatusActivity"
+            android:name=".features.order.OrderPaymentStatusActivity"
             android:exported="false" />
         <activity
-            android:name=".OrderPaymentActivity"
+            android:name=".features.order.OrderPaymentActivity"
             android:exported="false" />
         <activity
-            android:name=".SettingContactActivity"
+            android:name=".features.dashboard.fragments.settings.SettingContactActivity"
             android:exported="false" />
         <activity
-            android:name=".OrderCheckoutActivity"
+            android:name=".features.order.OrderCheckoutActivity"
             android:exported="false" />
         <activity
-            android:name=".MenuDetailActivity"
+            android:name=".features.dashboard.fragments.menus.MenuDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".DashboardActivity"
+            android:name=".features.dashboard.DashboardActivity"
             android:exported="false" />
         <activity
-            android:name=".AuthSignupActivity"
+            android:name=".features.auth.AuthSignupActivity"
             android:exported="false" />
         <activity
-            android:name=".AuthSigninActivity"
+            android:name=".features.auth.AuthSigninActivity"
             android:exported="false" />
         <activity
-            android:name=".OnboardingActivity"
+            android:name=".features.onboarding.OnboardingActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
