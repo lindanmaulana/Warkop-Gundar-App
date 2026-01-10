@@ -31,14 +31,11 @@ class SplashScreenActivity : BaseActivity() {
         lifecycleScope.launch(Dispatchers.IO) {
             delay(SPLASH_TIME_LOAD)
 
-            Log.d("DB_CHECK", "Mencoba mengakses database...")
             val db = AppDatabase.getDatabase(applicationContext)
 
             val cursor = db.query("SELECT * FROM menus", null)
             val count = cursor.count
             cursor.close()
-
-            Log.d("DB_CHECK", "Berhasil akses! Jumlah baris di tabel menu: $count")
 
             val targetActivity = when {
                 session.isLoggedIn() -> DashboardActivity::class.java

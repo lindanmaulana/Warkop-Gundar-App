@@ -16,6 +16,7 @@ import com.myproject.warkopgundar.features.auth.AuthSigninActivity
 import com.myproject.warkopgundar.databinding.ActivitySettingProfileBinding
 import com.myproject.warkopgundar.db.AppDatabase
 import com.myproject.warkopgundar.features.dashboard.DashboardActivity
+import com.myproject.warkopgundar.utils.maskEmail
 import com.myproject.warkopgundar.utils.showErrorSnackBar
 import kotlinx.coroutines.launch
 
@@ -25,12 +26,13 @@ class SettingProfileActivity : BaseActivity() {
     private lateinit var db: AppDatabase
     private lateinit var session: SessionManager
 
-    private var userPhoneNumber: String? = null
+    private var userEmail: String? = null
 
     private lateinit var username: TextView
-    private lateinit var phoneNumber: TextView
+    private lateinit var email: TextView
     private lateinit var inputUsername: TextInputEditText
     private lateinit var inputPhoneNumber: TextInputEditText
+    private lateinit var inputEmail: TextInputEditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivitySettingProfileBinding.inflate(layoutInflater)
@@ -41,14 +43,15 @@ class SettingProfileActivity : BaseActivity() {
         db = AppDatabase.getDatabase(this@SettingProfileActivity)
         session = SessionManager(this@SettingProfileActivity)
 
-        userPhoneNumber = session.getPhoneNumber()
+        userEmail = session.getUserEmail()
 
         username = binding.tvHeaderUsername
-        phoneNumber = binding.tvHeaderPhoneNumber
+        email = binding.tvHeaderEmail
         inputUsername = binding.inputUsername
         inputPhoneNumber = binding.inputPhoneNumber
+        inputEmail = binding.inputEmail
 
-        if (userPhoneNumber == null) {
+        if (userEmail == null) {
             session.logout()
             navigateToWithData(
                 destination = AuthSigninActivity::class.java,
@@ -79,9 +82,9 @@ class SettingProfileActivity : BaseActivity() {
 
     private fun setupActions() {
         binding.actionUpdate.setOnClickListener {
-            val currentPhone = userPhoneNumber
+            val currentEmail = userEmail
 
-            if (currentPhone == null) {
+            if (currentEmail == null) {
                 session.logout()
                 navigateToWithData(
                     destination = AuthSigninActivity::class.java,
@@ -92,23 +95,43 @@ class SettingProfileActivity : BaseActivity() {
             }
 
             val valInputUsername = inputUsername.text.toString().trim()
-            if (valInputUsername.isEmpty()) {
-                showDialogError("Validasi Error", "Nama tidak boleh kosong!")
+            val valInputPhoneNumber = inputPhoneNumber.text.toString().trim()
+
+            if (valInputUsername.isBlank() && valInputPhoneNumber.isBlank()) {
+                showDialogError("Validasi Error", "Harap isi minimal salah satu: Nama atau Nomor Handphone!")
                 return@setOnClickListener
             }
 
-            binding.actionUpdate.isEnabled = false
+            if (valInputPhoneNumber.isNotBlank()) {
+                when {
+                    !valInputPhoneNumber.all { it.isDigit() } -> {
+                        showDialogError("Validasi Error", "Nomor handphone hanya boleh berisi angka!")
+                        return@setOnClickListener
+                    }
 
+                    !valInputPhoneNumber.startsWith("08") -> {
+                        showDialogError("Validasi Error", "Format nomor salah! Gunakan awalan 08")
+                        return@setOnClickListener
+                    }
+
+                    valInputPhoneNumber.length !in 10..13 -> {
+                        showDialogError("Validasi Error","Nomor handphone harus 10-13 digit!")
+                        return@setOnClickListener
+                    }
+                }
+            }
+
+            binding.actionUpdate.isEnabled = false
             lifecycleScope.launch {
                 try {
-                    val user = db.userDao().getUserByPhoneNumber(currentPhone)
+                    val user = db.userDao().getUserByEmail(currentEmail)
 
                     if (user == null) {
                         showDialogError("Badrequest Error", "Akun anda belum terdaftar!")
                         return@launch
                     }
 
-                    val result = db.userDao().updateUserProfile(valInputUsername, currentPhone)
+                    val result = db.userDao().updateUserProfile(valInputUsername, currentEmail)
                     if (result < 0) {
                         showDialogError("Unknown Error", "Terjadi kesalahan tidak terduga, please try again later!")
                         return@launch
@@ -119,9 +142,8 @@ class SettingProfileActivity : BaseActivity() {
                         extra = "Profil Berhasil Diubah",
                         key = ExtraKey.MESSAGE,
                         targetMenuId = R.id.actionSetting)
-                } catch (e: SQLiteConstraintException) {
-                    binding.root.showErrorSnackBar("Terjadi kesalahan tidak terduga, please try again later", binding.tvHeaderUsername)
                 } catch (e: Exception) {
+                    e.printStackTrace()
                     binding.root.showErrorSnackBar("Terjadi kesalahan sistem, please try again later", binding.tvHeaderUsername)
                 } finally {
                     binding.actionUpdate.isEnabled = true
@@ -132,9 +154,9 @@ class SettingProfileActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-        val currentPhone = userPhoneNumber
+        val currentEmail = userEmail
 
-        if (currentPhone == null) {
+        if (currentEmail == null) {
             session.logout()
             navigateToWithData(
                 destination = AuthSigninActivity::class.java,
@@ -146,24 +168,28 @@ class SettingProfileActivity : BaseActivity() {
 
         lifecycleScope.launch {
             try {
-                val user = db.userDao().getUserByPhoneNumber(currentPhone)
+                val user = db.userDao().getUserByEmail(currentEmail)
 
-                if (user != null) {
-                    username.text = user.username
+                when {
+                    user != null -> {
+                        username.text = user.username
+                        email.text = maskEmail(user.email)
 
-                    val rawPhone = user.phoneNumber ?: ""
-                    if (rawPhone.length > 7) {
-                        val maskedPhone = rawPhone.replaceRange(3, 7, "****")
-                        phoneNumber.text = maskedPhone
-                        inputPhoneNumber.setText(maskedPhone)
-                        inputPhoneNumber.isEnabled = false
-                    } else {
-                        phoneNumber.text = rawPhone
+                        inputEmail.setText(maskEmail(user.email))
+                        inputEmail.isEnabled = false
+                    }
+
+                    else -> {
+                        session.logout()
+                        navigateToWithData(
+                            destination = AuthSigninActivity::class.java,
+                            extra = "Sesi anda telah habis, Harap masuk kembali.",
+                            key = ExtraKey.MESSAGE,
+                            isFinal = true)
                     }
                 }
-            } catch (e: SQLiteConstraintException) {
-                binding.root.showErrorSnackBar("Terjadi kesalahan tidak terduga, please try again later", binding.tvHeaderUsername)
             } catch (e: Exception) {
+                e.printStackTrace()
                 binding.root.showErrorSnackBar("Terjadi kesalahan sistem, please try again later", binding.tvHeaderUsername)
             }
         }

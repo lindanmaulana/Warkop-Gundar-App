@@ -3,6 +3,7 @@ package com.myproject.warkopgundar.features.dashboard.fragments
 import android.database.sqlite.SQLiteConstraintException
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -21,6 +22,7 @@ import com.myproject.warkopgundar.features.dashboard.fragments.settings.SettingC
 import com.myproject.warkopgundar.features.dashboard.fragments.settings.SettingProfileActivity
 import com.myproject.warkopgundar.features.auth.AuthSigninActivity
 import com.myproject.warkopgundar.databinding.FragmentDashboardSettingBinding
+import com.myproject.warkopgundar.utils.maskEmail
 import com.myproject.warkopgundar.utils.showErrorSnackBar
 import kotlinx.coroutines.launch
 
@@ -34,7 +36,7 @@ class DashboardSettingFragment : Fragment() {
     private lateinit var db: AppDatabase
     private lateinit var session: SessionManager
     private lateinit var username: TextView
-    private lateinit var phoneNumber: TextView
+    private lateinit var email: TextView
 
     private var param1: String? = null
     private var param2: String? = null
@@ -60,7 +62,7 @@ class DashboardSettingFragment : Fragment() {
         session = SessionManager(requireContext())
         db = AppDatabase.Companion.getDatabase(requireContext())
         username = binding.tvHeaderUsername
-        phoneNumber = binding.tvHeaderPhoneNumber
+        email = binding.tvHeaderEmail
 
         val message = requireActivity().intent.getStringExtra(ExtraKey.MESSAGE.value)
         if (message != null) {
@@ -165,9 +167,9 @@ class DashboardSettingFragment : Fragment() {
     override fun onResume() {
         super.onResume()
 
-        val userPhoneNumber = session.getPhoneNumber()
+        val userEmail = session.getUserEmail()
 
-        if (userPhoneNumber == null) {
+        if (userEmail == null) {
             session.logout()
             (requireActivity() as BaseActivity).navigateTo(AuthSigninActivity::class.java, isFinal = true)
             return
@@ -175,22 +177,21 @@ class DashboardSettingFragment : Fragment() {
 
         lifecycleScope.launch {
             try {
-                val user = db.userDao().getUserByPhoneNumber(userPhoneNumber)
+                val user = db.userDao().getUserByEmail(userEmail)
 
-                if (isAdded && user != null) {
-                    username.text = user.username
+                when {
+                    isAdded && user != null -> {
+                        username.text = user.username
+                        email.text = maskEmail(user.email)
+                    }
 
-                    val rawPhone = user.phoneNumber ?: ""
-                    if (rawPhone.length > 7) {
-                        val maskedPhone = rawPhone.replaceRange(3, 7, "****")
-                        phoneNumber.text = maskedPhone
-                    } else {
-                        phoneNumber.text = rawPhone
+                    else -> {
+                        session.logout()
+                        (requireActivity() as BaseActivity).navigateTo(AuthSigninActivity::class.java, isFinal = true)
                     }
                 }
-            } catch (e: SQLiteConstraintException) {
-                binding.root.showErrorSnackBar("Terjadi kesalahan tidak terduga, please try again later", binding.tvHeaderUsername)
-            } catch (e: Exception) {
+            }  catch (e: Exception) {
+                Log.e("ProfileFragment", "Error loading user: ${e.message}")
                 binding.root.showErrorSnackBar("Terjadi kesalahan sistem, please try again later", binding.tvHeaderUsername)
             }
         }

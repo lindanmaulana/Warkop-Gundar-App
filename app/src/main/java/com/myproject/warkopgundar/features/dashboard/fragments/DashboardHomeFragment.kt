@@ -89,9 +89,9 @@ class DashboardHomeFragment : Fragment() {
     override fun onResume() {
         super.onResume()
 
-        val userPhoneNumber = session.getPhoneNumber()
+        val userEmail = session.getUserEmail()
 
-        if (userPhoneNumber == null) {
+        if (userEmail == null) {
             session.logout()
             (requireActivity() as BaseActivity).navigateTo(AuthSigninActivity::class.java, isFinal = true)
             return
@@ -99,12 +99,11 @@ class DashboardHomeFragment : Fragment() {
 
         lifecycleScope.launch {
             try {
-                val user = db.userDao().getUserByPhoneNumber(userPhoneNumber)
+                val user = db.userDao().getUserByEmail(userEmail)
 
                 if (isAdded && user != null) username.text = "Hello,\n${user.username}"
-            } catch (e: SQLiteConstraintException) {
-                binding.root.showErrorSnackBar("Terjadi kesalahan tidak terduga, please try again later", binding.tvHeaderTitle)
             } catch (e: Exception) {
+                e.printStackTrace()
                 binding.root.showErrorSnackBar("Terjadi kesalahan sistem, please try again later", binding.tvHeaderTitle)
             }
         }

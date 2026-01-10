@@ -21,6 +21,7 @@ class AuthSignupActivity : BaseActivity() {
     private lateinit var db: AppDatabase
     private lateinit var binding: ActivityAuthSignupBinding
     private lateinit var inputUsername: TextInputEditText
+    private lateinit var inputEmail: TextInputEditText
     private lateinit var inputPhoneNumber: TextInputEditText
     private lateinit var inputPassword: TextInputEditText
     private lateinit var inputConfirmPassword: TextInputEditText
@@ -34,12 +35,14 @@ class AuthSignupActivity : BaseActivity() {
         db = AppDatabase.Companion.getDatabase(this@AuthSignupActivity)
 
         inputUsername = binding.inputUsername
+        inputEmail = binding.inputEmail
         inputPhoneNumber = binding.inputPhoneNumber
         inputPassword = binding.inputPassword
         inputConfirmPassword = binding.inputConfirmPassword
 
         binding.actionSignup.setOnClickListener {
             val userName = inputUsername.text.toString().trim()
+            val email = inputEmail.text.toString().trim()
             val phoneNumber = inputPhoneNumber.text.toString().trim()
             val password = inputPassword.text.toString().trim()
             val confirmPassword = inputConfirmPassword.text.toString().trim()
@@ -47,6 +50,18 @@ class AuthSignupActivity : BaseActivity() {
             if (userName.isEmpty() || phoneNumber.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
                 binding.root.showErrorSnackBar("Semua kolom wajib diisi!", binding.actionSignup)
                 return@setOnClickListener
+            }
+
+            when {
+                !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches() -> {
+                    binding.root.showErrorSnackBar("Format email salah (Contoh: user@email.com)", binding.actionSignup)
+                    return@setOnClickListener
+                }
+
+                !email.endsWith("@gmail.com") -> {
+                    binding.root.showErrorSnackBar("Hanya menerima email @gmail.com", binding.actionSignup)
+                    return@setOnClickListener
+                }
             }
 
             when {
@@ -80,6 +95,7 @@ class AuthSignupActivity : BaseActivity() {
 
             val dataUser = User(
                 username = userName,
+                email = email,
                 phoneNumber = phoneNumber,
                 password = password
             )
@@ -106,9 +122,8 @@ class AuthSignupActivity : BaseActivity() {
                 delay(1000)
 
                 navigateTo(AuthSigninActivity::class.java, isFinal = true)
-            } catch (e: SQLiteConstraintException) {
-                binding.root.showErrorSnackBar("Nomor Handphone telah terdaftar", binding.actionSignup)
             } catch (e: Exception) {
+                e.printStackTrace()
                 binding.root.showErrorSnackBar("Terjadi kesalahan sistem, please try again later", binding.actionSignup)
             }
         }

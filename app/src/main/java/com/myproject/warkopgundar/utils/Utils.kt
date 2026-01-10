@@ -32,6 +32,28 @@ fun Int.toParseCurrency(): String {
     return formatRupiah.format(this.toDouble()).replace("Rp", "Rp ")
 }
 
+fun maskEmail(email: String?): String {
+    if (email.isNullOrEmpty() || !email.contains("@")) return email ?: ""
+
+    val parts = email.split("@")
+    val name = parts[0]
+    val domain = parts[1]
+
+    return when {
+        name.length >= 5 -> {
+            "${name.take(2)}****${name.takeLast(2)}@$domain"
+        }
+
+        name.length in 3..4 -> {
+            "${name.take(1)}**${name.takeLast(1)}@$domain"
+        }
+
+        else -> {
+            "${name.take(1)}*@$domain"
+        }
+    }
+}
+
 fun View.gone() { this.visibility = View.GONE }
 fun View.visible() { this.visibility = View.VISIBLE }
 fun View.invisible() { this.visibility = View.INVISIBLE }

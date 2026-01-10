@@ -213,11 +213,10 @@ class DashboardMenuFragment : Fragment() {
                     }
                 }
             } catch (e: Exception) {
+                e.printStackTrace()
                 if (e is CancellationException) {
                     throw e
                 }
-                Log.e("DATABASE_ERROR", "Error getAllMenu: ${e.message}")
-
                 _binding?.let {
                     if (isAdded) {
                         val activityRoot = requireActivity().findViewById<View>(android.R.id.content)

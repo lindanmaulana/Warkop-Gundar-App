@@ -23,7 +23,7 @@ class AuthSigninActivity : BaseActivity() {
     private lateinit var db: AppDatabase
     private lateinit var session: SessionManager
     private lateinit var binding: ActivityAuthSigninBinding
-    private lateinit var inputPhoneNumber: TextInputEditText
+    private lateinit var inputEmail: TextInputEditText
     private lateinit var inputPassword: TextInputEditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,20 +50,20 @@ class AuthSigninActivity : BaseActivity() {
             intent.removeExtra(ExtraKey.SESSION_EXPIRED.value)
         }
 
-        inputPhoneNumber = binding.inputPhoneNumber
+        inputEmail = binding.inputEmail
         inputPassword = binding.inputPassword
 
         binding.actionSignin.setOnClickListener {
-            val phoneNumber = inputPhoneNumber.text.toString().trim()
+            val email = inputEmail.text.toString().trim()
             val password = inputPassword.text.toString().trim()
 
-            if (phoneNumber.isEmpty() || password.isEmpty()) {
-                binding.root.showErrorSnackBar("Nomor HP dan Password tidak boleh kosong", binding.actionSignin)
+            if (email.isEmpty() || password.isEmpty()) {
+                binding.root.showErrorSnackBar("Semua kolom tidak boleh kosong!", binding.actionSignin)
 
                 return@setOnClickListener
             }
 
-            serviceSignin(phoneNumber, password)
+            serviceSignin(email, password)
         }
 
         binding.actionToSignup.setOnClickListener {
@@ -77,10 +77,10 @@ class AuthSigninActivity : BaseActivity() {
         }
     }
 
-    private fun serviceSignin(phoneNumber: String, password: String) {
+    private fun serviceSignin(email: String, password: String) {
         lifecycleScope.launch {
             try {
-                val result = db.userDao().getUserByPhoneNumber(phoneNumber)
+                val result = db.userDao().getUserByEmail(email)
 
                 if (result == null) {
                     binding.root.showErrorSnackBar("Invalid Credentials!", binding.actionSignin)
@@ -93,11 +93,12 @@ class AuthSigninActivity : BaseActivity() {
                 }
 
                 binding.root.showSuccessSnackBar("Login Berhasil", binding.actionSignin)
-                session.createLoginSession(result.id, result.phoneNumber)
+                session.createLoginSession(result.id, result.email)
                 delay(1000)
 
                 navigateTo(DashboardActivity::class.java, isFinal = true)
             } catch (e: Exception) {
+                e.printStackTrace()
                 if (e is CancellationException) throw e
 
                 binding.root.showErrorSnackBar("Terjadi kesalahan sistem, please try again later", binding.actionSignin)

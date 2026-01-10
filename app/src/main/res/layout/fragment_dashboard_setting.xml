@@ -71,12 +71,12 @@
                 android:textColor="@android:color/white" />
 
             <TextView
-                android:id="@+id/tvHeaderPhoneNumber"
+                android:id="@+id/tvHeaderEmail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="\@lucasscott3"
+                android:text="\lucas@gmail.com"
                 android:textSize="14sp"
-                android:textColor="#9AA0A6" />
+                android:textColor="@color/gray" />
         </LinearLayout>
 
         <com.google.android.material.card.MaterialCardView
