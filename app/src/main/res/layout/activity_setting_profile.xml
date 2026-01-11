@@ -35,13 +35,13 @@
         <FrameLayout
             android:layout_width="96dp"
             android:layout_height="96dp">
-
-            <ImageView
+            <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/imgProfile"
                 android:layout_width="96dp"
                 android:layout_height="96dp"
-                android:src="@drawable/icon_avatar"
-                android:scaleType="centerCrop" />
+                android:src="@drawable/img_profile_default"
+                android:scaleType="centerCrop"
+                app:shapeAppearanceOverlay="@style/RoundedSquare" />
         </FrameLayout>
 
         <TextView
