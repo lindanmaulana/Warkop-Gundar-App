@@ -88,7 +88,7 @@
                         android:stretchColumns="1">
                         <TableRow android:layout_marginBottom="8dp">
                             <TextView android:text="Order" android:textColor="#8A919E" android:textSize="16sp" />
-                            <TextView android:text="7,000" android:textAlignment="viewEnd" android:textColor="#232D3F" android:textSize="16sp" />
+                            <TextView android:text="7" android:textAlignment="viewEnd" android:textColor="#232D3F" android:textSize="16sp" />
                         </TableRow>
                         <TableRow>
                             <TextView android:text="Total" android:textColor="#232D3F" android:textSize="16sp" android:textStyle="bold" />

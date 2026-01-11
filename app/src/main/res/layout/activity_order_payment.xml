@@ -72,15 +72,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:fillViewport="true"
+                app:layout_constraintBottom_toTopOf="@id/layoutActionNext"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/layoutActionNext">
+                app:layout_constraintVertical_bias="0.0"
+                tools:layout_editor_absoluteX="0dp">
 
                 <com.google.android.material.imageview.ShapeableImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/main_margin"
-                    app:srcCompat="@drawable/img_qris"
-                    android:contentDescription="Qris Payment"/>
+                    android:layout_gravity="center"
+                    android:contentDescription="Qris Payment"
+                    app:srcCompat="@drawable/img_qris" />
             </androidx.core.widget.NestedScrollView>
 
             <FrameLayout
