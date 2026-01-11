@@ -76,6 +76,7 @@ class GridViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     val tvTitle: TextView = view.findViewById(R.id.tvTitle)
     val tvSubtitle: TextView = view.findViewById(R.id.tvSubtitle)
     val tvPrice: TextView = view.findViewById(R.id.tvPrice)
+    val tvRatingValue: TextView = view.findViewById(R.id.tvRatingValue)
     val actionAddToCart: MaterialButton = view.findViewById(R.id.actionAddToCart)
 
     fun bind(item: Menu, onAddClick: (Menu) -> Unit) {
@@ -88,6 +89,7 @@ class GridViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             .error(R.drawable.img_placeholder)
             .centerCrop()
             .into(imgMenu)
+        tvRatingValue.text = item.rating.toString()
         // Tambahkan logic klik tombol jika perlu
 
         actionAddToCart.setOnClickListener {

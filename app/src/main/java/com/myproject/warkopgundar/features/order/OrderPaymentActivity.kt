@@ -2,16 +2,20 @@ package com.myproject.warkopgundar.features.order
 
 import android.graphics.Color
 import android.os.Bundle
+import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.myproject.warkopgundar.utils.AnimType
 import com.myproject.warkopgundar.utils.BaseActivity
 import com.myproject.warkopgundar.R
 import com.myproject.warkopgundar.databinding.ActivityOrderPaymentBinding
 import com.myproject.warkopgundar.features.dashboard.DashboardActivity
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class OrderPaymentActivity : BaseActivity() {
     private lateinit var binding: ActivityOrderPaymentBinding
@@ -31,8 +35,30 @@ class OrderPaymentActivity : BaseActivity() {
     }
 
     private fun setupActions() {
-        binding.actionNext.setOnClickListener {
-            navigateTo(OrderPaymentStatusActivity::class.java, typeTransition = AnimType.SLIDE)
+
+        binding.actionCheckStatus.setOnClickListener {
+            setLoading(true)
+
+            lifecycleScope.launch {
+                delay(2000)
+
+                val isPaid = true
+
+                setLoading(false)
+
+                if (isPaid) {
+                    MaterialAlertDialogBuilder(this@OrderPaymentActivity)
+                        .setTitle("Pembayaran Dikonfirmasi")
+                        .setMessage("Terima kasih telah setia menjadi bagian Warkop Gundar.")
+                        .setCancelable(false)
+                        .setPositiveButton("Lihat Status") { _, _ ->
+                            navigateTo(OrderPaymentStatusActivity::class.java, isFinal = true)
+                        }
+                        .show()
+                } else {
+                    showDialogError("Belum Dibayar", "Kami belum menerima pembayaranmu. Coba cek beberapa saat lagi ya!")
+                }
+            }
         }
 
         binding.actionBack.setOnClickListener {
@@ -46,6 +72,18 @@ class OrderPaymentActivity : BaseActivity() {
                 }.show()
 
             dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.RED)
+        }
+    }
+
+    private fun setLoading(isLoading: Boolean) {
+        if (isLoading) {
+            binding.actionCheckStatus.text = "Memverifikasi..."
+            binding.actionCheckStatus.isEnabled = false
+            binding.pbLoadingStatus.visibility = View.VISIBLE
+        } else {
+            binding.actionCheckStatus.text = "Cek Status Pembayaran"
+            binding.actionCheckStatus.isEnabled = true
+            binding.pbLoadingStatus.visibility = View.GONE
         }
     }
 }

@@ -32,6 +32,15 @@ fun Int.toParseCurrency(): String {
     return formatRupiah.format(this.toDouble()).replace("Rp", "Rp ")
 }
 
+fun Int?.toLikeCountFormat(): String {
+    val value = this ?: 0
+
+    val localeID = Locale.forLanguageTag("id-ID")
+    val formatter = NumberFormat.getNumberInstance(localeID)
+
+    return "(${formatter.format(value)})"
+}
+
 fun maskEmail(email: String?): String {
     if (email.isNullOrEmpty() || !email.contains("@")) return email ?: ""
 

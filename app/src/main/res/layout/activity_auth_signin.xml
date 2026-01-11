@@ -32,8 +32,8 @@
             android:id="@+id/tvTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Sign In"
-            android:textColor="#1D2431"
+            android:text="Login"
+            android:textColor="@color/primary"
             android:textSize="32sp"
             android:textStyle="bold"
             app:layout_constraintTop_toTopOf="parent"
@@ -46,7 +46,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="Kita sudah pernah ketemu!"
-            android:textColor="#9E9E9E"
+            android:textColor="@color/gray"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -105,7 +105,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="Lupa kata sandi?"
-            android:textColor="#1D2431"
+            android:textColor="@color/primary"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -146,7 +146,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Belum punya akun? "
-            android:textColor="#9E9E9E" />
+            android:textColor="@color/gray" />
 
         <TextView
             android:id="@+id/actionToSignup"
@@ -155,7 +155,7 @@
             android:clickable="true"
             android:focusable="true"
             android:text="Daftar"
-            android:textColor="#1D2431"
+            android:textColor="@color/primary"
             android:textStyle="bold" />
     </LinearLayout>
 

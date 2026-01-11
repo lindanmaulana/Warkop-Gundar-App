@@ -73,7 +73,7 @@
                 android:layout_height="0dp"
                 android:fillViewport="true"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/actionNext">
+                app:layout_constraintBottom_toTopOf="@id/layoutActionNext">
 
                 <com.google.android.material.imageview.ShapeableImageView
                     android:layout_width="wrap_content"
@@ -83,19 +83,34 @@
                     android:contentDescription="Qris Payment"/>
             </androidx.core.widget.NestedScrollView>
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/actionNext"
+            <FrameLayout
+                android:id="@+id/layoutActionNext"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:text="Continue"
-                android:textAllCaps="false"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
                 android:layout_marginHorizontal="@dimen/main_margin"
                 android:layout_marginBottom="@dimen/main_margin"
-                app:backgroundTint="@color/primary"
-                app:cornerRadius="12dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/actionCheckStatus"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:text="Cek Status Pembayaran"
+                    android:textAllCaps="false"
+                    app:cornerRadius="16dp"
+                    app:backgroundTint="@color/primary" />
+
+                <ProgressBar
+                    android:id="@+id/pbLoadingStatus"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center"
+                    android:visibility="gone"
+                    android:indeterminateTint="@color/white" />
+            </FrameLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

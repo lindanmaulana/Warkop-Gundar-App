@@ -33,7 +33,7 @@ class OnboardingFragment : Fragment() {
             }
             1 -> {
                 binding.tvTitle.text = "Rasa Yang Selalu Ngangenin"
-                binding.tvDesc.text = "Dari racikan kopi klasik sampai mi instan legendaris, semua dibuat spesial untuk menemani waktu santaimu.."
+                binding.tvDesc.text = "Dari racikan kopi klasik sampai mi instan legendaris, semua dibuat spesial untuk menemani waktu santaimu."
                 binding.ivOnboarding.setImageResource(R.drawable.img_phone_2)
             }
             2 -> {

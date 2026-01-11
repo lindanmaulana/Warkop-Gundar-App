@@ -6,6 +6,7 @@ import androidx.activity.viewModels
 import androidx.core.content.IntentCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.bumptech.glide.Glide
 import com.myproject.warkopgundar.utils.AnimType
 import com.myproject.warkopgundar.utils.BaseActivity
 import com.myproject.warkopgundar.utils.ExtraKey
@@ -18,6 +19,7 @@ import com.myproject.warkopgundar.features.dashboard.fragments.carts.CartViewMod
 import com.myproject.warkopgundar.features.dashboard.DashboardActivity
 import com.myproject.warkopgundar.features.order.OrderCheckoutActivity
 import com.myproject.warkopgundar.utils.DialogSuccess
+import com.myproject.warkopgundar.utils.toLikeCountFormat
 import com.myproject.warkopgundar.utils.toParseCurrency
 
 class MenuDetailActivity : BaseActivity() {
@@ -87,6 +89,13 @@ class MenuDetailActivity : BaseActivity() {
         binding.tvMenuName.text = data.name
         binding.tvMenuPrice.text = data.price.toParseCurrency()
         binding.tvMenuDescription.text = data.description
-        binding.imgMenu.setImageResource(data.imageRes ?: R.drawable.img_placeholder)
+        binding.tvRatingValue.text = data.rating.toString()
+        binding.tvRatingCount.text = data.likes.toLikeCountFormat()
+        Glide.with(this)
+            .load(data.imageRes)
+            .placeholder(R.drawable.img_placeholder)
+            .error(R.drawable.img_placeholder)
+            .centerCrop()
+            .into(binding.imgMenu)
     }
 }

@@ -34,5 +34,5 @@ data class Menu(
     val rating: Double?,
     val likes: Int?,
     val imageRes: Int?,
-    val categoryId: Int
+    val categoryId: Int,
 ): Parcelable
