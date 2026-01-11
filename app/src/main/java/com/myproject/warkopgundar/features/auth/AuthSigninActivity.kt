@@ -83,16 +83,16 @@ class AuthSigninActivity : BaseActivity() {
                 val result = db.userDao().getUserByEmail(email)
 
                 if (result == null) {
-                    binding.root.showErrorSnackBar("Invalid Credentials!", binding.actionSignin)
+                    binding.root.showErrorSnackBar("Invalid Credentials!", binding.tvTitle)
                     return@launch
                 }
 
                 if (password != result.password) {
-                    binding.root.showErrorSnackBar("Invalid Credentials!", binding.actionSignin)
+                    binding.root.showErrorSnackBar("Invalid Credentials!", binding.tvTitle)
                     return@launch
                 }
 
-                binding.root.showSuccessSnackBar("Login Berhasil", binding.actionSignin)
+                binding.root.showSuccessSnackBar("Login Berhasil", binding.tvTitle)
                 session.createLoginSession(result.id, result.email)
                 delay(1000)
 

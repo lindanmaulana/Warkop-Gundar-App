@@ -48,47 +48,47 @@ class AuthSignupActivity : BaseActivity() {
             val confirmPassword = inputConfirmPassword.text.toString().trim()
 
             if (userName.isEmpty() || phoneNumber.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
-                binding.root.showErrorSnackBar("Semua kolom wajib diisi!", binding.actionSignup)
+                binding.root.showErrorSnackBar("Semua kolom wajib diisi!", binding.tvTitle)
                 return@setOnClickListener
             }
 
             when {
                 !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches() -> {
-                    binding.root.showErrorSnackBar("Format email salah (Contoh: user@email.com)", binding.actionSignup)
+                    binding.root.showErrorSnackBar("Format email salah (Contoh: user@email.com)", binding.tvTitle)
                     return@setOnClickListener
                 }
 
                 !email.endsWith("@gmail.com") -> {
-                    binding.root.showErrorSnackBar("Hanya menerima email @gmail.com", binding.actionSignup)
+                    binding.root.showErrorSnackBar("Hanya menerima email @gmail.com", binding.tvTitle)
                     return@setOnClickListener
                 }
             }
 
             when {
                 !phoneNumber.startsWith("08") -> {
-                    binding.root.showErrorSnackBar("Gunakan format 08 (Contoh: 087723...)", binding.actionSignup)
+                    binding.root.showErrorSnackBar("Gunakan format 08 (Contoh: 087723...)", binding.tvTitle)
                     return@setOnClickListener
                 }
 
                 !phoneNumber.all { it.isDigit() } -> {
-                    binding.root.showErrorSnackBar("Nomor telepon hanya boleh berisi angka!", binding.actionSignup)
+                    binding.root.showErrorSnackBar("Nomor telepon hanya boleh berisi angka!", binding.tvTitle)
                     return@setOnClickListener
                 }
 
                 phoneNumber.length !in 10..13 -> {
-                    binding.root.showErrorSnackBar("Nomor handphone harus 10-13 digit!", binding.actionSignup)
+                    binding.root.showErrorSnackBar("Nomor handphone harus 10-13 digit!", binding.tvTitle)
                     return@setOnClickListener
                 }
             }
 
             when {
                 password.length < 6 -> {
-                    binding.root.showErrorSnackBar("Password minimal 6 karakter", binding.actionSignup)
+                    binding.root.showErrorSnackBar("Password minimal 6 karakter", binding.tvTitle)
                     return@setOnClickListener
                 }
 
                 password != confirmPassword -> {
-                    binding.root.showErrorSnackBar("Password dan ConfirmPassword tidak valid", binding.actionSignup)
+                    binding.root.showErrorSnackBar("Password dan ConfirmPassword tidak valid", binding.tvTitle)
                     return@setOnClickListener
                 }
             }
@@ -118,13 +118,13 @@ class AuthSignupActivity : BaseActivity() {
         lifecycleScope.launch {
             try {
                 db.userDao().insertUser(data)
-                binding.root.showSuccessSnackBar("Registrasi Berhasil", binding.actionSignup)
+                binding.root.showSuccessSnackBar("Registrasi Berhasil", binding.tvTitle)
                 delay(1000)
 
                 navigateTo(AuthSigninActivity::class.java, isFinal = true)
             } catch (e: Exception) {
                 e.printStackTrace()
-                binding.root.showErrorSnackBar("Terjadi kesalahan sistem, please try again later", binding.actionSignup)
+                binding.root.showErrorSnackBar("Terjadi kesalahan sistem, please try again later", binding.tvTitle)
             }
         }
     }
